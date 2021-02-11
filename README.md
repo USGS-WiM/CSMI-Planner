@@ -1,18 +1,20 @@
 ![WiM](wimlogo.png)
 
+# CSMI-Planner
 
-# LIQWIDS
+This project merges [SIGL](https://sigl.wim.usgs.gov/siglservices) and [Water Quality Portal](https://www.waterqualitydata.us/) data to create a Cooperative Science and Monitoring Initiative CSMI planning tool. Current development is focused on the Lake Huron basin in preparation for the 2022 field year.
 
-Development of Long Island Water Quality Integrated Data System (LIQWIDS) - user interface in support of collaboration under the Long Island Nitrogen Action Plan(LINAP) using the [Water Quality Portal](https://www.waterqualitydata.us/).
+Initial code forked from: [LIQWIDS](https://github.com/USGS-WiM/LIQWIDS)
 
 ### Prerequisites
 
-This project has dependencies that require Angular CLI, Node 6.9.0  or higher, and NPM 3 or higher. NPM is downloaded with Node.js here: https://nodejs.org/en/.
+This project has dependencies that require Angular CLI, Node 6.9.0 or higher, and NPM 3 or higher. NPM is downloaded with Node.js here: https://nodejs.org/en/.
 
 Once npm is installed, install the Angular CLI:
- ```
- npm install -g @angular/cli
- ```
+
+```
+npm install -g @angular/cli
+```
 
 ## Getting Started
 
@@ -21,19 +23,23 @@ These instructions will get you a copy of the project up and running on your loc
 ### Installing
 
 Clone the repo and install it with npm
+
 ```
-git clone https://github.com/USGS-WiM/LIQWIDS.git
-cd /LIQWIDS
+git clone https://github.com/USGS-WiM/CSMI-Planner.git
+cd /CSMI-Planner
 npm install
 ```
 
 ## Building and testing
 
 Run live server with
+
 ```
 npm run start
 ```
+
 To build a production version of the app:
+
 ```
 ng build --prod --base-href
 ```
@@ -48,8 +54,8 @@ Pushes to the `master` branch trigger an action to build and deploy to our demo 
 
 ## Built With
 
-* [Angular](https://angular.io/) - The main web framework used
-* [NPM](https://www.npmjs.com/) - Dependency Management
+-   [Angular](https://angular.io/) - The main web framework used
+-   [NPM](https://www.npmjs.com/) - Dependency Management
 
 ## Contributing
 
@@ -57,7 +63,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the process for su
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](../../tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](../../tags).
 
 If you want to update the version numbers in the package.json and code.json:
 
@@ -75,13 +81,16 @@ Advance the version when adding features, fixing bugs or making minor enhancemen
 
 To push tags to remote origin: `git push origin --tags`
 
-*Note that your alias for the remote origin may differ.
+\*Note that your alias for the remote origin may differ.
 
 ## Authors
 
-* **[Martyn Smith](https://www.usgs.gov/staff-profiles/martyn-smith)**  - *Developer* - [USGS Web Informatics & Mapping](https://wim.usgs.gov/)
-* **[Katrin Jacobsen](https://www.usgs.gov/staff-profiles/katrin-jacobsen)** - *Developer* -  [USGS Web Informatics & Mapping](https://wim.usgs.gov/)
-* **[Erik Myers](https://www.usgs.gov/staff-profiles/erik-s-myers)** - *Developer* -  [USGS Web Informatics & Mapping](https://wim.usgs.gov/)
+-   **[Erik Myers](https://www.usgs.gov/staff-profiles/erik-s-myers)** - _Developer_ - [USGS Web Informatics & Mapping](https://wim.usgs.gov/)
+
+This project was forked from [LIQWIDS](https://github.com/USGS-WiM/LIQWIDS) primarily developed by:
+
+-   **[Martyn Smith](https://www.usgs.gov/staff-profiles/martyn-smith)** - _Developer_ - [USGS Web Informatics & Mapping](https://wim.usgs.gov/)
+-   **[Katrin Jacobsen](https://www.usgs.gov/staff-profiles/katrin-jacobsen)** - _Developer_ - [USGS Web Informatics & Mapping](https://wim.usgs.gov/)
 
 See also the list of [contributors](../../graphs/contributors) who participated in this project.
 
@@ -90,13 +99,13 @@ See also the list of [contributors](../../graphs/contributors) who participated 
 This project is licensed under the Creative Commons CC0 1.0 Universal License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Suggested Citation
+
 In the spirit of open source, please cite any re-use of the source code stored in this repository. Below is the suggested citation:
 
 `This project contains code produced by the Web Informatics and Mapping (WIM) team at the United States Geological Survey (USGS). As a work of the United States Government, this project is in the public domain within the United States. https://wim.usgs.gov`
 
-
-
 ## About WIM
-* This project is authored by the [USGS WIM team](https://wim.usgs.gov)
-* WIM is a team of developers and technologists who build and manage tools, software, web services, and databases to support USGS science and other federal government cooperators.
-* WIM is a part of the [Upper Midwest Water Science Center](https://www.usgs.gov/centers/wisconsin-water-science-center).
+
+-   This project is authored by the [USGS WIM team](https://wim.usgs.gov)
+-   WIM is a team of developers and technologists who build and manage tools, software, web services, and databases to support USGS science and other federal government cooperators.
+-   WIM is a part of the [Upper Midwest Water Science Center](https://www.usgs.gov/centers/wisconsin-water-science-center).

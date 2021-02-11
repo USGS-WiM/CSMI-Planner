@@ -1,105 +1,118 @@
-<div *ngIf="!authenticated" id="authBlock">
+<!-- <div *ngIf="!authenticated" id="authBlock">
 	<div class="auth-body">
 		<div class="title">Password Required</div>
-		<input type="password" [(ngModel)]="authPassword" (keyup.enter)="authenticate()" placeholder="Password" />
+		<input
+			type="password"
+			[(ngModel)]="authPassword"
+			(keyup.enter)="authenticate()"
+			placeholder="Password"
+		/>
 		<button type="submit" (click)="authenticate()">Enter</button>
 	</div>
-</div>
+</div> -->
 
 <!-- Show everything else if autthenticated -->
 <!-- Using ngIf instead of display:none or opacity with CSS prevents users from
 accessing the site anyway by using the inspector to change the CSS properties -->
-<div *ngIf="authenticated">
-
-	<!-- 
+<div>
+	<!--
 	Main wrapper
 	Flex column
 	-->
 
 	<div id="outer" [ngClass]="{ blur: aboutModal }">
-	<!-- 
-		Page header 
+		<!--
+		Page header
 		- Nav, links, branding, etc
 	-->
-	<header id="main">
-		<!-- Branding / Logo --> 
-		<div id="branding">
-		<i
-			class="far"
-			id="sidebarToggle"
-			(click)="expandSidebar = !expandSidebar"
-			[ngClass]="{ 'fa-bars': !expandSidebar, 'fa-times': expandSidebar }"
-		></i>
-		<!-- USGS Logo -->
-		<a href="https://usgs.gov" alt="USGS Home Page" title="USGS Home Page" target="_blank" id="usgsLogo">
-			<img src="https://www.usgs.gov/sites/all/themes/usgs_palladium/logo.png" />
-		</a>
-		<a href="https://www.dec.ny.gov/" alt="New York State Department of Environmental Conservation Home Page" title="NY DEC Home Page" target="_blank" id="nydecLogo">
-			<img src="./assets/nydec.png" />
-		</a>
-		<!-- Title -->
-		<div id="title">
-			<span class="abbr">L</span>
-			<span class="expanded">ong</span>
-			<span class="abbr">I</span>
-			<span class="expanded">sland</span>
-			<span class="abbr">Q</span>
-			<span class="expanded">uality of</span>
-			<span class="abbr">W</span>
-			<span class="expanded">ater</span>
-			<span class="abbr">I</span>
-			<span class="expanded">ntegrated</span>
-			<span class="abbr">D</span>
-			<span class="expanded">ata</span>
-			<span class="abbr">S</span>
-			<span class="expanded">ystem</span>
-		</div>
-		<div id="demoLabel">(DEMO)</div>
-		</div>
-		<!-- Links on right -->
-		<nav id="headerLinks">
-		<a (click)="aboutModal = true"><i class="fa fa-info-circle"></i>&nbsp;About</a>
-		<a (click)="userGuideModal = true"><i class="fa fa-book"></i>&nbsp;User Guide</a>
-		</nav>
-	</header>
+		<header id="main">
+			<!-- Branding / Logo -->
+			<div id="branding">
+				<i
+					class="far"
+					id="sidebarToggle"
+					(click)="expandSidebar = !expandSidebar"
+					[ngClass]="{
+						'fa-bars': !expandSidebar,
+						'fa-times': expandSidebar
+					}"
+				></i>
+				<!-- USGS Logo -->
+				<a
+					href="https://usgs.gov"
+					alt="USGS Home Page"
+					title="USGS Home Page"
+					target="_blank"
+					id="usgsLogo"
+				>
+					<img
+						src="https://www.usgs.gov/sites/all/themes/usgs_palladium/logo.png"
+					/>
+				</a>
+				<!-- <a
+					href="https://www.dec.ny.gov/"
+					alt="New York State Department of Environmental Conservation Home Page"
+					title="NY DEC Home Page"
+					target="_blank"
+					id="nydecLogo"
+				>
+					<img src="./assets/nydec.png" />
+				</a> -->
+				<!-- Title -->
+				<div id="title">
+					<span class="abbr">S</span>
+					<span class="expanded">cience</span>
+					<span class="abbr">i</span>
+					<span class="expanded">n the</span>
+					<span class="abbr">G</span>
+					<span class="expanded">reat</span>
+					<span class="abbr">L</span>
+					<span class="expanded">akes</span>
+				</div>
+				<div id="demoLabel">(Lake Huron CSMI Planner DEMO)</div>
+			</div>
+			<!-- Links on right -->
+			<nav id="headerLinks">
+				<a (click)="aboutModal = true"
+					><i class="fa fa-info-circle"></i>&nbsp;About</a
+				>
+				<a (click)="userGuideModal = true"
+					><i class="fa fa-book"></i>&nbsp;User Guide</a
+				>
+			</nav>
+		</header>
 
-	<!-- 
-		Main body wrapper 
-		Main body wrapper 
-		Main body wrapper 
+		<!--
+		Main body wrapper
+		Main body wrapper
+		Main body wrapper
 	-->
-	<div id="body">
-		<app-loading-screen></app-loading-screen>
-		<!-- 
+		<div id="body">
+			<app-loading-screen></app-loading-screen>
+			<!--
 		Sidebar
 		Sidebar
 		-->
-		<app-sidebar></app-sidebar>
-		
-		
-		
+			<app-sidebar></app-sidebar>
 
-		<!-- 
-		Content 
-		Content 
-		Content 
+			<!--
+		Content
+		Content
+		Content
 		-->
-		<main>
-		<!-- Map -->
-			<!-- <div id="map"></div> -->
-			<app-map></app-map>
-			
-			<app-dataview></app-dataview>
-			
+			<main>
+				<!-- Map -->
+				<!-- <div id="map"></div> -->
+				<app-map></app-map>
 
-		</main>
-		<!-- End Main Content -->
-	</div>
-	<!-- End Main Body Wrapper-->
+				<app-dataview></app-dataview>
+			</main>
+			<!-- End Main Content -->
+		</div>
+		<!-- End Main Body Wrapper-->
 	</div>
 
-
-	<!-- 
+	<!--
 	================================================================
 	Toast
 	Toast
@@ -110,14 +123,21 @@ accessing the site anyway by using the inspector to change the CSS properties --
 		<i class="far fa-surprise" id="toastIcon"></i>
 		<div id="toastText">
 			<div id="toastTitle">Oops!</div>
-			<div id="toastBody"> Something went wrong - try again later.</div>
+			<div id="toastBody">Something went wrong - try again later.</div>
 		</div>
 	</div>
 
-	<div id="toast" class="blue" [ngClass]="{ visible: toastType === 'firstLoadWarning'}">
+	<div
+		id="toast"
+		class="blue"
+		[ngClass]="{ visible: toastType === 'firstLoadWarning' }"
+	>
 		<i class="far fa-exclamation-circle" id="toastIcon"></i>
 		<div id="toastText">
-			<div id="toastBody">Please note that you may experience long delays when first loading sites.</div>
+			<div id="toastBody">
+				Please note that you may experience long delays when first
+				loading sites.
+			</div>
 		</div>
 	</div>
 
@@ -139,7 +159,6 @@ accessing the site anyway by using the inspector to change the CSS properties --
 
 	$scope.toast("red", "fa-exclamation", "Toast Title", "Toast Body"); -->
 
-
 	<!-- <div id="toast" class="{{toastClass}}" [ngClass]="{ visible: showToast }">
 	<i class="far {{toastIcon}}" id="toastIcon"></i>
 	<div id="toastText">
@@ -148,7 +167,7 @@ accessing the site anyway by using the inspector to change the CSS properties --
 	</div>
 	</div> -->
 
-	<!-- 
+	<!--
 	================================================================
 	Modals
 	Modals
@@ -157,34 +176,43 @@ accessing the site anyway by using the inspector to change the CSS properties --
 	-->
 	<!-- About Modal -->
 	<div class="modal-wrapper" *ngIf="aboutModal" (click)="aboutModal = false">
-	<div class="modal" id="aboutModal" (click)="$event.stopPropagation()">
-		<div class="modal-header">
-		<div class="title">About</div>
-		<div class="modal-close" (click)="aboutModal = false">&times;</div>
-		</div>
+		<div class="modal" id="aboutModal" (click)="$event.stopPropagation()">
+			<div class="modal-header">
+				<div class="title">About</div>
+				<div class="modal-close" (click)="aboutModal = false">
+					&times;
+				</div>
+			</div>
 
-		<div class="modal-content">
-		
+			<div class="modal-content">
+				<tabs>
+					<tab [tabTitle]="'About LIQWIDS'">
+						<br />
+						<h6>What is LIQWIDS?</h6>
 
-		<tabs>
-			<tab [tabTitle]="'About LIQWIDS'">
-				<br/>
-				<h6>What is LIQWIDS?</h6>
-
-				<p>
-					There are more than 60 organizations and agencies collecting water-quality data on Long Island. As a result, those interested 
-					in analyzing data may be unaware of what data exist and how those data can be obtained without a Freedom of 
-					Information Law request. This web tool is intended to provide a unified view of the water-quality data available, in support of 
-					ongoing efforts such as LINAP, LICAP, and other State and local environmental and human health initiatives. This product was developed by USGS 
-					in partnership with New York State Department of Environmental Conservation
-				</p>
-			</tab>
-			<tab [tabTitle]="'Contributing Organizations'">
-				<br/>
-				<h6>Water Quality Portal</h6>
-				<p style="margin-bottom: 0;">Summary of Data Submission</p>
-				<app-summary></app-summary>
-				<!-- <div id="dashboardTable">
+						<p>
+							There are more than 60 organizations and agencies
+							collecting water-quality data on Long Island. As a
+							result, those interested in analyzing data may be
+							unaware of what data exist and how those data can be
+							obtained without a Freedom of Information Law
+							request. This web tool is intended to provide a
+							unified view of the water-quality data available, in
+							support of ongoing efforts such as LINAP, LICAP, and
+							other State and local environmental and human health
+							initiatives. This product was developed by USGS in
+							partnership with New York State Department of
+							Environmental Conservation
+						</p>
+					</tab>
+					<tab [tabTitle]="'Contributing Organizations'">
+						<br />
+						<h6>Water Quality Portal</h6>
+						<p style="margin-bottom: 0">
+							Summary of Data Submission
+						</p>
+						<app-summary></app-summary>
+						<!-- <div id="dashboardTable">
 					<div class="row header">
 						<div>Date</div>
 						<div>Site</div>
@@ -196,7 +224,7 @@ accessing the site anyway by using the inspector to change the CSS properties --
 						<div>Amount</div>
 						<div>Notes</div>
 					</div>
-				
+
 					<div class="row">
 						<div>10/11/18</div>
 						<div>12512</div>
@@ -209,264 +237,378 @@ accessing the site anyway by using the inspector to change the CSS properties --
 						<div></div>
 					</div>
 				</div> -->
-			</tab>
-			<tab [tabTitle]="'Disclaimers'">
-					<br/>
-					<h6>USGS Data Disclaimer:</h6>
-		
-					<p>
-						Unless otherwise stated, all data, metadata and related materials are considered to satisfy the quality standards relative 
-						to the purpose for which the data were collected. Although these data and associated metadata have been reviewed for accuracy 
-						and completeness and approved for release by the U.S. Geological Survey (USGS), no warranty expressed or implied is made 
-						regarding the display or utility of the data for other purposes, nor on all computer systems, nor shall the act of distribution 
-						constitute any such warranty.
-					</p>
-					<h6>USGS Software Disclaimer:</h6>
-					<p>
-						This software has been approved for release by the U.S. Geological Survey (USGS). Although the software has been subjected to 
-						rigorous review, the USGS reserves the right to update the software as needed pursuant to further analysis and review. 
-						No warranty, expressed or implied, is made by the USGS or the U.S. Government as to the functionality of the software and 
-						related material nor shall the fact of release constitute any such warranty. Furthermore, the software is released on condition 
-						that neither the USGS nor the U.S. Government shall be held liable for any damages resulting from its authorized or unauthorized use.
-					</p>
-					<h6>USGS Product Names Disclaimer:</h6>
-					<p>
-						Any use of trade, firm, or product names is for descriptive purposes only and does not imply endorsement by the U.S. Government.
-					</p>
-					<p>App version: {{pack.version}}</p>
-				</tab>
-			</tabs>
-		
-		
-		</div>
+					</tab>
+					<tab [tabTitle]="'Disclaimers'">
+						<br />
+						<h6>USGS Data Disclaimer:</h6>
 
-		<div class="modal-actions right">
-		<button (click)="aboutModal = false">Close</button>
+						<p>
+							Unless otherwise stated, all data, metadata and
+							related materials are considered to satisfy the
+							quality standards relative to the purpose for which
+							the data were collected. Although these data and
+							associated metadata have been reviewed for accuracy
+							and completeness and approved for release by the
+							U.S. Geological Survey (USGS), no warranty expressed
+							or implied is made regarding the display or utility
+							of the data for other purposes, nor on all computer
+							systems, nor shall the act of distribution
+							constitute any such warranty.
+						</p>
+						<h6>USGS Software Disclaimer:</h6>
+						<p>
+							This software has been approved for release by the
+							U.S. Geological Survey (USGS). Although the software
+							has been subjected to rigorous review, the USGS
+							reserves the right to update the software as needed
+							pursuant to further analysis and review. No
+							warranty, expressed or implied, is made by the USGS
+							or the U.S. Government as to the functionality of
+							the software and related material nor shall the fact
+							of release constitute any such warranty.
+							Furthermore, the software is released on condition
+							that neither the USGS nor the U.S. Government shall
+							be held liable for any damages resulting from its
+							authorized or unauthorized use.
+						</p>
+						<h6>USGS Product Names Disclaimer:</h6>
+						<p>
+							Any use of trade, firm, or product names is for
+							descriptive purposes only and does not imply
+							endorsement by the U.S. Government.
+						</p>
+						<p>App version: {{ pack.version }}</p>
+					</tab>
+				</tabs>
+			</div>
+
+			<div class="modal-actions right">
+				<button (click)="aboutModal = false">Close</button>
+			</div>
 		</div>
-	</div>
 	</div>
 
 	<!-- User Guide Modal -->
-	<div class="modal-wrapper" *ngIf="userGuideModal" (click)="userGuideModal = false">
-	<div class="modal" id="userGuideModal" (click)="$event.stopPropagation()">
-		<div class="modal-header">
-		<div class="title">User Guide</div>
-		<div class="modal-close" (click)="userGuideModal = false">&times;</div>
-		</div>
+	<div
+		class="modal-wrapper"
+		*ngIf="userGuideModal"
+		(click)="userGuideModal = false"
+	>
+		<div
+			class="modal"
+			id="userGuideModal"
+			(click)="$event.stopPropagation()"
+		>
+			<div class="modal-header">
+				<div class="title">User Guide</div>
+				<div class="modal-close" (click)="userGuideModal = false">
+					&times;
+				</div>
+			</div>
 
-		<div class="modal-content">
-		
-
-		<tabs>
-			<tab [tabTitle]="'Zoom, Selection'" [tabIcon]="'fa fa-search'">
-				<div class="user-guide-header">Zoom and Selection Capabilities</div>
-				<div class="user-guide-item">
-					<div>
-						<img src='assets/userguide/zoom_plusminus.PNG' />
-					</div>
-					<p>
-						<b>Navigating the Map</b>The scroll wheel on the mouse can be used to zoom, and in the upper left area of the tool 
-						are "+" and "-" icons to zoom in and out, respectively.</p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/zoom_shift.png" />
-					</div>
-					<p>
-						<b>Define an Area to Zoom to</b>In most web browsers, the user can hold down the shift key, then click
-						and drag the map to define the area to zoom in.
-					</p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/site_popup.png" />
-					</div>
-					<p>
-						<b>Selecting a Site</b>To open up a site information box, hover over a site until the mouse hand is pointing at it, then 
-						click/tap on the circle at its location on the map. This will highlight the site and open a pop-up window containing information 
-						about the site. If the "Select Multiple Sites" button is not selected, it will also populate the "Data" view.
-					</p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/select_mult.png" />
-						<img src="assets/userguide/stop_mult.png" />
-					</div>
-					<p>
-						<b>Selecting Multiple Sites</b>To select multiple sites, the user can either hold down the "ctrl" key and click on 
-						a site, or use the "Select Multiple Sites" button in the data view. When the "Select Multiple Sites" button 
-						is selected, the user can click/tap on multiple sites and they will be highlighted. If one or more sites are 
-						already selected before the button is clicked, they will be included in the selection. Once the user is 
-						finished selecting sites, they can click/tap "Finish selecting" and the result data will be queried.</p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/mult_sites.png" />
-					</div>
-					<p>
-						<b>Viewing Overlapping Sites</b>When two or more sites are overlapping, their circles on the map
-						appear darker. Clicking/tapping on overlapping sites will display a warning in the site information pop-up
-						box.
-					</p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/mult_sites_zoom.png" />
-					</div>
-					<p>
-						<b>Zoom into Overlapping Sites</b>In order to select overlapping sites, first zoom into them. When
-						it's close enough to select them, a circle with a number inside will appear, representing
-						the number of sites at that location.</p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/mult_sites_spiderfy.png" />
-					</div>
-					<p>
-						<b>Selecting Overlapping Sites</b>Once the circle containing the number of sites in the location
-						is in view, click/tap on that circle. The sites will separate, and the user can then select each
-						site to view their information.</p>
-				</div>
-			</tab>
-			<tab [tabTitle]="'Explanation, Basemaps'" [tabIcon]="'fa fa-list'">
-				<br/>
-				<div class="user-guide-header">Explanation and Basemaps</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/explanation.png" />
-					</div>
-					<p>
-						<b>Using the Explanation</b>The explanation box contains a legend for the available sites.</p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/explanation-collapsed.png" />
-					</div>
-					<p>
-						<b>Explanation Display</b>The explanation box can be collapsed or expanded by clicking/tapping on the header.</p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/site_symbolization.png" />
-					</div>
-					<p>
-						<b>Changing Symbolization</b>In the explanation, the user can switch between symbolizing sites by either Keyword 
-						or by the Organization Name. To do so, click/tap on the radio buttons next to the symbolization type.</p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/basemap_layers.PNG" />
-					</div>
-					<p>
-						<b>Changing the Basemap Style</b>The "Basemaps" panel allows a user to select various geographic information 
-						or landscape imagery as a background layer.</p>
-				</div>
-			</tab>
-			<tab [tabTitle]="'Exploring Site Data'" [tabIcon]="'fa fa-map-marker-alt'">
-				<br/>
-				<div class="user-guide-header">Exploring Site Data</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/dataview.png" />
-					</div>
-					<p>
-						<b>The Data View</b>The "Data" view of the mapper contains result data in the form of charts and tables 
-					for the sites on the map. </p>
-				</div>
-				<div class="user-guide-item">
-						<div>
-							<img src="assets/userguide/piecharts.png" />
+			<div class="modal-content">
+				<tabs>
+					<tab
+						[tabTitle]="'Zoom, Selection'"
+						[tabIcon]="'fa fa-search'"
+					>
+						<div class="user-guide-header">
+							Zoom and Selection Capabilities
 						</div>
-						<p>
-							<b>Pie Charts</b>If no sites are selected on the map, the data view contains pie charts indicating the 
-							various site types and organizations of the sites on the map, and what portion of the sites include those 
-							types and organizations.</p>
-					</div>
-				<div class="user-guide-item">
-					<div style="display: inline">
-						<img src="assets/userguide/scatterplot.png" />
-					</div>
-					<p>
-						<b>Scatterplots</b>If one or more sites are selected, the data view contains scatterplots displaying measurement 
-						values for those sites. </p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/chartoptions.png" />
-					</div>
-					<p>
-						<b>Chart Options</b>The scatterplots can be exported  to a "PNG", "JPEG", "PDF" or "SVG" vector image using the 
-						"Chart Options" button.
-					</p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/serieson.png" />
-						<img src="assets/userguide/seriesoff.png" />
-					</div>
-					<p>
-						<b>Toggle on/off Scatterplot Series</b>The series on the scatterplot can be toggled on/off by clicking/tapping on 
-						the series name in the legend below the chart.</p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/charttype.png" />
-					</div>
-					<p>
-						<b>Changing the Chart Type</b>The y-axis of the scatterplots can be toggled between a "Linear" or "Logarithmic" 
-						scale by selecting the radio button next to each chart type.</p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/datatable.png" />
-					</div>
-					<p>
-						<b>Data Table</b>Below the scatterplots, a table contains selected fields from the result data for the selected sites. 
-						The user can download the complete results .csv or print a "report" view of the data view.</p>
-				</div>
-			</tab>
-			<tab [tabTitle]="'Filtering Sites'" [tabIcon]="'fa fa-filter'">
-				<br/>
-				<div class="user-guide-header">Filtering Sites</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/parameterfilters.png" />
-					</div>
-					<p>
-						<b>Parameter Filters</b>The parameter filters in the sidebar allow the user to filter the sites on the map by Characteristic, 
-						Event Year, and Minimum Result Count. After selecting the filters, the user must click/tap the "Apply Changes" button to update 
-						the sites.</p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/sitefilters.png" />
-					</div>
-					<p>
-						<b>Site Filters</b>The site filters in the sidebar allow the user to filter by huc8, organization, data provider, 
-						keyword and site type. The site filters update on selection. </p>
-				</div>
-				<div class="user-guide-item">
-					<div>
-						<img src="assets/userguide/clearfilt.png" />
-					</div>
-					<p>
-						<b>Clear Selected Filters</b>
-						To clear the selected site filters, the user can click/tap the "Clear Selections" button in the sidebar.
-					</p>
-				</div>
-			</tab>
-		</tabs>
-		
-		
-		</div>
+						<div class="user-guide-item">
+							<div>
+								<img
+									src="assets/userguide/zoom_plusminus.PNG"
+								/>
+							</div>
+							<p>
+								<b>Navigating the Map</b>The scroll wheel on the
+								mouse can be used to zoom, and in the upper left
+								area of the tool are "+" and "-" icons to zoom
+								in and out, respectively.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img src="assets/userguide/zoom_shift.png" />
+							</div>
+							<p>
+								<b>Define an Area to Zoom to</b>In most web
+								browsers, the user can hold down the shift key,
+								then click and drag the map to define the area
+								to zoom in.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img src="assets/userguide/site_popup.png" />
+							</div>
+							<p>
+								<b>Selecting a Site</b>To open up a site
+								information box, hover over a site until the
+								mouse hand is pointing at it, then click/tap on
+								the circle at its location on the map. This will
+								highlight the site and open a pop-up window
+								containing information about the site. If the
+								"Select Multiple Sites" button is not selected,
+								it will also populate the "Data" view.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img src="assets/userguide/select_mult.png" />
+								<img src="assets/userguide/stop_mult.png" />
+							</div>
+							<p>
+								<b>Selecting Multiple Sites</b>To select
+								multiple sites, the user can either hold down
+								the "ctrl" key and click on a site, or use the
+								"Select Multiple Sites" button in the data view.
+								When the "Select Multiple Sites" button is
+								selected, the user can click/tap on multiple
+								sites and they will be highlighted. If one or
+								more sites are already selected before the
+								button is clicked, they will be included in the
+								selection. Once the user is finished selecting
+								sites, they can click/tap "Finish selecting" and
+								the result data will be queried.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img src="assets/userguide/mult_sites.png" />
+							</div>
+							<p>
+								<b>Viewing Overlapping Sites</b>When two or more
+								sites are overlapping, their circles on the map
+								appear darker. Clicking/tapping on overlapping
+								sites will display a warning in the site
+								information pop-up box.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img
+									src="assets/userguide/mult_sites_zoom.png"
+								/>
+							</div>
+							<p>
+								<b>Zoom into Overlapping Sites</b>In order to
+								select overlapping sites, first zoom into them.
+								When it's close enough to select them, a circle
+								with a number inside will appear, representing
+								the number of sites at that location.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img
+									src="assets/userguide/mult_sites_spiderfy.png"
+								/>
+							</div>
+							<p>
+								<b>Selecting Overlapping Sites</b>Once the
+								circle containing the number of sites in the
+								location is in view, click/tap on that circle.
+								The sites will separate, and the user can then
+								select each site to view their information.
+							</p>
+						</div>
+					</tab>
+					<tab
+						[tabTitle]="'Explanation, Basemaps'"
+						[tabIcon]="'fa fa-list'"
+					>
+						<br />
+						<div class="user-guide-header">
+							Explanation and Basemaps
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img src="assets/userguide/explanation.png" />
+							</div>
+							<p>
+								<b>Using the Explanation</b>The explanation box
+								contains a legend for the available sites.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img
+									src="assets/userguide/explanation-collapsed.png"
+								/>
+							</div>
+							<p>
+								<b>Explanation Display</b>The explanation box
+								can be collapsed or expanded by clicking/tapping
+								on the header.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img
+									src="assets/userguide/site_symbolization.png"
+								/>
+							</div>
+							<p>
+								<b>Changing Symbolization</b>In the explanation,
+								the user can switch between symbolizing sites by
+								either Keyword or by the Organization Name. To
+								do so, click/tap on the radio buttons next to
+								the symbolization type.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img
+									src="assets/userguide/basemap_layers.PNG"
+								/>
+							</div>
+							<p>
+								<b>Changing the Basemap Style</b>The "Basemaps"
+								panel allows a user to select various geographic
+								information or landscape imagery as a background
+								layer.
+							</p>
+						</div>
+					</tab>
+					<tab
+						[tabTitle]="'Exploring Site Data'"
+						[tabIcon]="'fa fa-map-marker-alt'"
+					>
+						<br />
+						<div class="user-guide-header">Exploring Site Data</div>
+						<div class="user-guide-item">
+							<div>
+								<img src="assets/userguide/dataview.png" />
+							</div>
+							<p>
+								<b>The Data View</b>The "Data" view of the
+								mapper contains result data in the form of
+								charts and tables for the sites on the map.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img src="assets/userguide/piecharts.png" />
+							</div>
+							<p>
+								<b>Pie Charts</b>If no sites are selected on the
+								map, the data view contains pie charts
+								indicating the various site types and
+								organizations of the sites on the map, and what
+								portion of the sites include those types and
+								organizations.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div style="display: inline">
+								<img src="assets/userguide/scatterplot.png" />
+							</div>
+							<p>
+								<b>Scatterplots</b>If one or more sites are
+								selected, the data view contains scatterplots
+								displaying measurement values for those sites.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img src="assets/userguide/chartoptions.png" />
+							</div>
+							<p>
+								<b>Chart Options</b>The scatterplots can be
+								exported to a "PNG", "JPEG", "PDF" or "SVG"
+								vector image using the "Chart Options" button.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img src="assets/userguide/serieson.png" />
+								<img src="assets/userguide/seriesoff.png" />
+							</div>
+							<p>
+								<b>Toggle on/off Scatterplot Series</b>The
+								series on the scatterplot can be toggled on/off
+								by clicking/tapping on the series name in the
+								legend below the chart.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img src="assets/userguide/charttype.png" />
+							</div>
+							<p>
+								<b>Changing the Chart Type</b>The y-axis of the
+								scatterplots can be toggled between a "Linear"
+								or "Logarithmic" scale by selecting the radio
+								button next to each chart type.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img src="assets/userguide/datatable.png" />
+							</div>
+							<p>
+								<b>Data Table</b>Below the scatterplots, a table
+								contains selected fields from the result data
+								for the selected sites. The user can download
+								the complete results .csv or print a "report"
+								view of the data view.
+							</p>
+						</div>
+					</tab>
+					<tab
+						[tabTitle]="'Filtering Sites'"
+						[tabIcon]="'fa fa-filter'"
+					>
+						<br />
+						<div class="user-guide-header">Filtering Sites</div>
+						<div class="user-guide-item">
+							<div>
+								<img
+									src="assets/userguide/parameterfilters.png"
+								/>
+							</div>
+							<p>
+								<b>Parameter Filters</b>The parameter filters in
+								the sidebar allow the user to filter the sites
+								on the map by Characteristic, Event Year, and
+								Minimum Result Count. After selecting the
+								filters, the user must click/tap the "Apply
+								Changes" button to update the sites.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img src="assets/userguide/sitefilters.png" />
+							</div>
+							<p>
+								<b>Site Filters</b>The site filters in the
+								sidebar allow the user to filter by huc8,
+								organization, data provider, keyword and site
+								type. The site filters update on selection.
+							</p>
+						</div>
+						<div class="user-guide-item">
+							<div>
+								<img src="assets/userguide/clearfilt.png" />
+							</div>
+							<p>
+								<b>Clear Selected Filters</b>
+								To clear the selected site filters, the user can
+								click/tap the "Clear Selections" button in the
+								sidebar.
+							</p>
+						</div>
+					</tab>
+				</tabs>
+			</div>
 
-		<div class="modal-actions right">
-		<button (click)="userGuideModal = false">Close</button>
+			<div class="modal-actions right">
+				<button (click)="userGuideModal = false">Close</button>
+			</div>
 		</div>
-	</div>
 	</div>
 
 	<router-outlet></router-outlet>
-
-
 </div>

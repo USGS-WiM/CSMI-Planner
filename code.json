@@ -1,44 +1,40 @@
 [
-  {
-    "name": "LIQWIDS",
-    "organization": "U.S. Geological Survey",
-    "description": "LIQWIDS Project",
-    "version": "v0.1.2",
-    "status": "Development",
+	{
+		"name": "CSMI-Planner",
+		"organization": "U.S. Geological Survey",
+		"description": "Lake Huron CSMI Planning tool demo",
+		"version": "v0.0.1",
+		"status": "Development",
 
-    "permissions": {
-      "usageType": "openSource",
-      "licenses": [
-        {
-          "name": "Public Domain, CC0-1.0",
-          "URL": "https://github.com/usgs/best-practices/blob/master/LICENSE.md"
-        }
-      ]
-    },
+		"permissions": {
+			"usageType": "openSource",
+			"licenses": [
+				{
+					"name": "Public Domain, CC0-1.0",
+					"URL": "https://github.com/usgs/best-practices/blob/master/LICENSE.md"
+				}
+			]
+		},
 
-    "homepageURL": "https://wim.usgs.gov",
-    "downloadURL": "https://github.com/USGS-WiM/LIQWIDS/archive/master.zip",
-    "disclaimerURL": "https://github.com/USGS-WiM/LIQWIDS/blob/master/DISCLAIMER.md",
-    "repositoryUrl": "https://github.com/USGS-WiM/LIQWIDS",
-    "vcs": "git",
+		"homepageURL": "https://wim.usgs.gov",
+		"downloadURL": "https://github.com/USGS-WiM/CSMI-Planner/archive/master.zip",
+		"disclaimerURL": "https://github.com/USGS-WiM/CSMI-Planner/blob/master/DISCLAIMER.md",
+		"repositoryUrl": "https://github.com/USGS-WiM/CSMI-Planner",
+		"vcs": "git",
 
-    "laborHours": null,
+		"laborHours": null,
 
-    "tags": [
-      "webapp"
-    ],
+		"tags": ["webapp"],
 
-    "languages": [
-      "Angular"
-    ],
+		"languages": ["Angular"],
 
-    "contact": {
-      "name": "Martyn Smith",
-      "email": "marsmith@usgs.gov"
-    },
+		"contact": {
+			"name": "Erik Myers",
+			"email": "emyers@usgs.gov"
+		},
 
-    "date": {
-      "metadataLastUpdated": "2018-4-24"
-    }
-  }
+		"date": {
+			"metadataLastUpdated": "2018-4-24"
+		}
+	}
 ]
