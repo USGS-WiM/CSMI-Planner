@@ -85,6 +85,7 @@ export class MapService {
 
 	public sitesLayer: L.FeatureGroup<any>;
 	public nwisLayer: L.FeatureGroup<any>;
+	public siglLayer: L.FeatureGroup<any>;
 	public selectedSiteLayer: any;
 	// send selected sites/characteristics to dataview
 	public _selectedSiteSubject = new Subject();
@@ -208,6 +209,8 @@ export class MapService {
 			}),
 		};
 
+		//TOOOS: Add stream gages as Aux layers
+
 		// if typeScript complains about searchParams, add it to the class in the leaflet@types definition
 		this.mainLayers = {
 			WQP: L.tileLayer.wms(
@@ -244,11 +247,41 @@ export class MapService {
 			.pipe(
 				timeout(this.timeoutTime),
 				map((response) => {
+					//find and remove sites with identical lat/long values before they pollute geoJSON bbox props. They can't be correct in this extent
+					/* response.features.forEach((feature) => {
+						if (
+							feature.geometry.coordinates[0] ===
+							feature.geometry.coordinates[1]
+						) {
+							response.features.splice(feature, 1);
+							console.log(
+								`removed ${JSON.stringify(
+									feature.properties
+								)} because coordinates are out of range`
+							);
+						}
+					});
+
+					response.features.forEach((feature) => {
+						if (feature.geometry.coordinates[0] > 0) {
+							console.log("lat out of range ", feature);
+						}
+					});
+
+					if (response.bbox[0] < 20) {
+						console.log(
+							"manually changed bbox value into appropriate range"
+						);
+						response.bbox[0] = 42.1111111;
+					} */
+
 					this.geoJson = response;
+					//this.addToSitesLayer(this.geoJson);
 					this.filterJson = this.geoJson; // set filtered object to all on init.
 
 					// get unique values for filterOptions
 					this.filterOptions = {};
+
 					// remove Dissolved oxygen (DO) site in the middle of the Atlantic
 					const toRemove = this.geoJson.features.findIndex(
 						(feat) => feat.properties.name === "NALMS-5172"
@@ -469,7 +502,14 @@ export class MapService {
 		// zoom
 		// If sites layer has only one site, add extra padding
 		if (geoJson.features.length > 1) {
-			this.map.fitBounds(this.sitesLayer.getBounds(), {
+			//force appropriate latitude for bad coordinates
+			let bounds = this.sitesLayer.getBounds();
+			if (bounds.getSouthWest().lat < 0) {
+				//force hard-coded south cornder
+				let SW = L.latLng(42.1111, bounds.getWest());
+				bounds = L.latLngBounds(SW, bounds.getNorthEast());
+			}
+			this.map.fitBounds(bounds, {
 				padding: [20, 20],
 			});
 		} else if (geoJson.features.length === 1) {

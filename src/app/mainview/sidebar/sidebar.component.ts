@@ -22,6 +22,7 @@ export class SidebarComponent implements OnInit {
 	showBasemaps = false;
 	showSiteFilters = true;
 	showParameterFilters = true;
+	showSiglFilters = true;
 	expandSidebar = false;
 	chosenBaseLayer;
 	public urlParams = {};

@@ -6,6 +6,7 @@ import {
 	AfterViewInit,
 } from "@angular/core";
 import { MapService } from "src/app/shared/services/map.service";
+import { SiglService } from "src/app/shared/services/sigl.service";
 
 import * as L from "leaflet";
 import { SummariesService } from "src/app/shared/services/summaries.service";
@@ -37,6 +38,7 @@ export class MapComponent implements OnInit {
 	constructor(
 		private _mapService: MapService,
 		private _summariesService: SummariesService,
+		private _siglService: SiglService,
 		private _route: ActivatedRoute
 	) {}
 
@@ -47,12 +49,16 @@ export class MapComponent implements OnInit {
 			center: L.latLng(44.9, -82.0),
 			zoom: 9,
 			minZoom: 4,
-			maxZoom: 19,
+			maxZoom: 17,
 			renderer: L.canvas(),
 		});
 
 		this._mapService.DataPanelCollapse.subscribe((collapse) => {
 			this.collapsedDataPanel = collapse;
+		});
+
+		this._siglService.projects$.subscribe((response) => {
+			console.log("map component received sigl projects");
 		});
 
 		// baseMaps
@@ -65,6 +71,10 @@ export class MapComponent implements OnInit {
 			this._mapService.map
 		);
 		this._mapService.nwisLayer = L.featureGroup().addTo(
+			this._mapService.map
+		);
+
+		this._mapService.siglLayer = L.featureGroup().addTo(
 			this._mapService.map
 		);
 
@@ -103,9 +113,9 @@ export class MapComponent implements OnInit {
 
 		this._mapService.legend.addTo(this._mapService.map);
 
-		/// NOT FINISHED
-		this._mapService.map.on("load moveend zoomend", (e) => {
-			// console.log('here',e)
+		/// NOT FINISHED CLUSTERING
+		/* this._mapService.map.on("load moveend zoomend", (e) => {
+			console.log("here", e);
 
 			const bbox =
 				this._mapService.map.getBounds().getSouthWest().lng.toFixed(7) +
@@ -126,7 +136,7 @@ export class MapComponent implements OnInit {
 					this._mapService.markerClusters.disableClustering();
 				}
 			}
-		});
+		}); */
 	}
 
 	changeSymbology(id) {

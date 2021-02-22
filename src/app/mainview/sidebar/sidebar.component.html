@@ -85,6 +85,7 @@
 			</div>
 		</div>
 
+		<!--  Sidebar WQP filters  -->
 		<div
 			class="sidebar-header"
 			(click)="showParameterFilters = !showParameterFilters"
@@ -94,7 +95,7 @@
 			<b><span>WQP Filters</span></b>
 		</div>
 
-		<!-- Filters Parameter Content -->
+		<!--WQP Filters Parameter Content -->
 		<div
 			class="sidebar-content"
 			[ngClass]="{ expanded: showParameterFilters }"
@@ -150,8 +151,7 @@
 			</form>
 		</div>
 
-		<!--  Sidebar Site Filters  -->
-
+		<!--  Sidebar WQP Site Filters  -->
 		<div
 			class="sidebar-header"
 			(click)="showSiteFilters = !showSiteFilters"
@@ -224,6 +224,44 @@
 				<ng-select
 					formControlName="type"
 					[items]="siteFilterData.type"
+					[multiple]="true"
+					bindLabel="name"
+					placeholder="Select"
+				>
+				</ng-select>
+			</form>
+
+			<button
+				class="clearForm"
+				title="Clear All Selections"
+				(click)="clearForm()"
+			>
+				Clear Selections
+			</button>
+		</div>
+
+		<div
+			class="sidebar-header"
+			(click)="showSiglFilters = !showSiglFilters"
+			[ngClass]="{ expanded: showSiteFilters }"
+		>
+			<i class="fal fa-sliders-v"></i>
+			<b><span>SiGL Site Filters</span></b>
+		</div>
+		<div class="sidebar-content" [ngClass]="{ expanded: showSiteFilters }">
+			<form
+				*ngIf="siteFilterData"
+				[formGroup]="siteDropDownGroup"
+				id="sidebarSiglFilters"
+			>
+				<!-- Org Name -->
+				<label for="orgName" class="multiselect-label"
+					>Organization Name</label
+				>
+
+				<ng-select
+					formControlName="orgName"
+					[items]="siteFilterData.orgName"
 					[multiple]="true"
 					bindLabel="name"
 					placeholder="Select"
