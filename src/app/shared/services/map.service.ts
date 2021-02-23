@@ -41,7 +41,7 @@ export class MapService {
 	public markerClusters;
 	public geoJsonURL;
 	public siglSitesURL;
-	public siglgeoJjson: any; //switch to type geojson later?
+	public siglgeoJson: any; //switch to type geojson later?
 	public colorJson = []; // for symbolizing sites if site filters applied
 	public selectMultSites = false;
 	// for symbolizing by keyword or organization
@@ -292,8 +292,8 @@ export class MapService {
 		return this._http.get<any>(this.siglSitesURL).pipe(
 			tap((response) => console.log(response)),
 			map((response) => {
-				this.siglgeoJjson = response;
-				this.addToSitesLayer(this.siglgeoJjson);
+				this.siglgeoJson = response;
+				this.addToSitesLayer(this.siglgeoJson);
 			}),
 			catchError((error) => this.handleError(error))
 		);
@@ -338,8 +338,18 @@ export class MapService {
 		this.highlightMarkers = [];
 		const layer = L.geoJSON(geoJson, {
 			pointToLayer: function (feature, latLng) {
-				const marker = self.setMarker(feature, self);
-				return L.circleMarker(latLng, marker);
+				// only add SIGL Lake Huron sites
+				if (
+					feature.properties.lake_type_id &&
+					feature.properties.lake_type_id == 2
+				) {
+					const marker = self.setMarker(feature, self);
+					return L.circleMarker(latLng, marker);
+				} else if (!feature.properties.lake_type_id) {
+					//add everything else that's not sigl
+					const marker = self.setMarker(feature, self);
+					return L.circleMarker(latLng, marker);
+				}
 			},
 			onEachFeature: (feature, lay) => {
 				if (feature.properties.lake_type_id) {
