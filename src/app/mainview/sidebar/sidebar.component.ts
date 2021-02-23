@@ -14,7 +14,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class SidebarComponent implements OnInit {
 	public parameterDropDownGroup: FormGroup;
 	public siteDropDownGroup: FormGroup;
+	public siglDropDownGroup: FormGroup;
 	public siteFilterData;
+	public siglFilterData: any;
 	public parameterFilterData;
 	public defaultParameterFilter;
 	public defaultMinResults = 1;
@@ -173,6 +175,15 @@ export class SidebarComponent implements OnInit {
 			type: [[]],
 		});
 
+		this.siglDropDownGroup = this.formBuilder.group({
+			siglOrg: [[]],
+			lake: [[]],
+			projectName: [[]],
+		});
+
+		this._mapService.getSiglSites().subscribe((response) => {
+			this.siglFilterData = response;
+		});
 		// this is the main data request
 		this._mapService.getData().subscribe((response) => {
 			this.siteFilterData = response;

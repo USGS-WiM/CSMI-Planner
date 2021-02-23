@@ -1,7 +1,8 @@
 export interface Config {
-    geoJsonURL: string;
-    resultUrl: string;
-    summaryUrl: string;
-    orgUrl: string;
-    sumUrlSettings: string;
+	geoJsonURL: string;
+	siglSitesURL: string;
+	resultUrl: string;
+	summaryUrl: string;
+	orgUrl: string;
+	sumUrlSettings: string;
 }

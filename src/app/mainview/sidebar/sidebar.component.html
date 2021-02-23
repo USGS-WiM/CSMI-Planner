@@ -249,33 +249,33 @@
 			<b><span>SiGL Site Filters</span></b>
 		</div>
 		<div class="sidebar-content" [ngClass]="{ expanded: showSiteFilters }">
-			<form
+			<!-- <form
 				*ngIf="siteFilterData"
-				[formGroup]="siteDropDownGroup"
+				[formGroup]="siglDropDownGroup"
 				id="sidebarSiglFilters"
 			>
-				<!-- Org Name -->
-				<label for="orgName" class="multiselect-label"
+
+				<label for="siglOrg" class="multiselect-label"
 					>Organization Name</label
 				>
 
 				<ng-select
-					formControlName="orgName"
-					[items]="siteFilterData.orgName"
+					formControlName="siglOrg"
+					[items]="siglFilterData.project_id"
 					[multiple]="true"
 					bindLabel="name"
 					placeholder="Select"
 				>
 				</ng-select>
-			</form>
+			</form> -->
 
-			<button
+			<!-- 	<button
 				class="clearForm"
 				title="Clear All Selections"
 				(click)="clearForm()"
 			>
 				Clear Selections
-			</button>
+			</button> -->
 		</div>
 		<!-- End Sidebar Scroll -->
 	</div>

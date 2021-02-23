@@ -13,7 +13,7 @@ import {
 	Subject,
 	TimeoutError,
 } from "rxjs";
-import { map, catchError, timeout } from "rxjs/operators";
+import { map, catchError, timeout, tap } from "rxjs/operators";
 import { LoaderService } from "../../shared/services/loader.service";
 
 declare let L;
@@ -40,6 +40,8 @@ export class MapService {
 	public highlightMarkers = [];
 	public markerClusters;
 	public geoJsonURL;
+	public siglSitesURL;
+	public siglgeoJjson: any; //switch to type geojson later?
 	public colorJson = []; // for symbolizing sites if site filters applied
 	public selectMultSites = false;
 	// for symbolizing by keyword or organization
@@ -142,6 +144,7 @@ export class MapService {
 	) {
 		this.configSettings = this._configService.getConfiguration();
 		this.geoJsonURL = this.configSettings.geoJsonURL;
+		this.siglSitesURL = this.configSettings.siglSitesURL;
 		this.chosenBaseLayer = "Topo";
 
 		this.baseMaps = {
@@ -247,36 +250,7 @@ export class MapService {
 			.pipe(
 				timeout(this.timeoutTime),
 				map((response) => {
-					//find and remove sites with identical lat/long values before they pollute geoJSON bbox props. They can't be correct in this extent
-					/* response.features.forEach((feature) => {
-						if (
-							feature.geometry.coordinates[0] ===
-							feature.geometry.coordinates[1]
-						) {
-							response.features.splice(feature, 1);
-							console.log(
-								`removed ${JSON.stringify(
-									feature.properties
-								)} because coordinates are out of range`
-							);
-						}
-					});
-
-					response.features.forEach((feature) => {
-						if (feature.geometry.coordinates[0] > 0) {
-							console.log("lat out of range ", feature);
-						}
-					});
-
-					if (response.bbox[0] < 20) {
-						console.log(
-							"manually changed bbox value into appropriate range"
-						);
-						response.bbox[0] = 42.1111111;
-					} */
-
 					this.geoJson = response;
-					//this.addToSitesLayer(this.geoJson);
 					this.filterJson = this.geoJson; // set filtered object to all on init.
 
 					// get unique values for filterOptions
@@ -312,6 +286,17 @@ export class MapService {
 					return this.handleError(error);
 				})
 			);
+	}
+
+	public getSiglSites(): Observable<any> {
+		return this._http.get<any>(this.siglSitesURL).pipe(
+			tap((response) => console.log(response)),
+			map((response) => {
+				this.siglgeoJjson = response;
+				this.addToSitesLayer(this.siglgeoJjson);
+			}),
+			catchError((error) => this.handleError(error))
+		);
 	}
 
 	private handleError(err: HttpErrorResponse) {
@@ -357,18 +342,28 @@ export class MapService {
 				return L.circleMarker(latLng, marker);
 			},
 			onEachFeature: (feature, lay) => {
-				lay.bindPopup(
-					"<b>Site Name: </b>" +
-						feature.properties.name +
-						"<br/><b>Location Name: </b>" +
-						feature.properties.locName +
-						"<br/><b>Organization Name: </b>" +
-						feature.properties.orgName +
-						"<br/><b>Site Type: </b>" +
-						feature.properties.type +
-						"<br/><b>Result Count: </b>" +
-						feature.properties.resultCnt
-				);
+				if (feature.properties.lake_type_id) {
+					lay.bindPopup(
+						"<b>SiGL Site Name: </b>" +
+							feature.properties.name +
+							"<br/><b>Description: </b>" +
+							feature.properties.description
+					);
+				} else {
+					lay.bindPopup(
+						"<b>Site Name: </b>" +
+							feature.properties.name +
+							"<br/><b>Location Name: </b>" +
+							feature.properties.locName +
+							"<br/><b>Organization Name: </b>" +
+							feature.properties.orgName +
+							"<br/><b>Site Type: </b>" +
+							feature.properties.type +
+							"<br/><b>Result Count: </b>" +
+							feature.properties.resultCnt
+					);
+				}
+
 				lay.on("click", function (e) {
 					// check for overlapping sites
 					let locSites = 0;
