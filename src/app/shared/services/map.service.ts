@@ -13,7 +13,7 @@ import {
 	Subject,
 	TimeoutError,
 } from "rxjs";
-import { map, catchError, timeout } from "rxjs/operators";
+import { map, catchError, timeout, tap } from "rxjs/operators";
 import { LoaderService } from "../../shared/services/loader.service";
 
 declare let L;
@@ -40,6 +40,8 @@ export class MapService {
 	public highlightMarkers = [];
 	public markerClusters;
 	public geoJsonURL;
+	public siglSitesURL;
+	public siglgeoJson: any; //switch to type geojson later?
 	public colorJson = []; // for symbolizing sites if site filters applied
 	public selectMultSites = false;
 	// for symbolizing by keyword or organization
@@ -85,6 +87,7 @@ export class MapService {
 
 	public sitesLayer: L.FeatureGroup<any>;
 	public nwisLayer: L.FeatureGroup<any>;
+	public siglLayer: L.FeatureGroup<any>;
 	public selectedSiteLayer: any;
 	// send selected sites/characteristics to dataview
 	public _selectedSiteSubject = new Subject();
@@ -141,6 +144,7 @@ export class MapService {
 	) {
 		this.configSettings = this._configService.getConfiguration();
 		this.geoJsonURL = this.configSettings.geoJsonURL;
+		this.siglSitesURL = this.configSettings.siglSitesURL;
 		this.chosenBaseLayer = "Topo";
 
 		this.baseMaps = {
@@ -208,6 +212,8 @@ export class MapService {
 			}),
 		};
 
+		//TOOOS: Add stream gages as Aux layers
+
 		// if typeScript complains about searchParams, add it to the class in the leaflet@types definition
 		this.mainLayers = {
 			WQP: L.tileLayer.wms(
@@ -249,6 +255,7 @@ export class MapService {
 
 					// get unique values for filterOptions
 					this.filterOptions = {};
+
 					// remove Dissolved oxygen (DO) site in the middle of the Atlantic
 					const toRemove = this.geoJson.features.findIndex(
 						(feat) => feat.properties.name === "NALMS-5172"
@@ -279,6 +286,17 @@ export class MapService {
 					return this.handleError(error);
 				})
 			);
+	}
+
+	public getSiglSites(): Observable<any> {
+		return this._http.get<any>(this.siglSitesURL).pipe(
+			tap((response) => console.log(response)),
+			map((response) => {
+				this.siglgeoJson = response;
+				this.addToSitesLayer(this.siglgeoJson);
+			}),
+			catchError((error) => this.handleError(error))
+		);
 	}
 
 	private handleError(err: HttpErrorResponse) {
@@ -320,22 +338,49 @@ export class MapService {
 		this.highlightMarkers = [];
 		const layer = L.geoJSON(geoJson, {
 			pointToLayer: function (feature, latLng) {
-				const marker = self.setMarker(feature, self);
-				return L.circleMarker(latLng, marker);
+				// only add SIGL Lake Huron sites
+				if (
+					feature.properties.lake_type_id &&
+					feature.properties.lake_type_id == 2
+				) {
+					const marker = {
+						radius: 4,
+						fillColor: "#752326",
+						weight: 0,
+						opacity: 1,
+						fillOpacity: 0.5,
+					};
+					return L.circleMarker(latLng, marker);
+				} else if (!feature.properties.lake_type_id) {
+					//add everything else that's not sigl
+					const marker = self.setMarker(feature, self);
+					return L.circleMarker(latLng, marker);
+				}
 			},
 			onEachFeature: (feature, lay) => {
-				lay.bindPopup(
-					"<b>Site Name: </b>" +
-						feature.properties.name +
-						"<br/><b>Location Name: </b>" +
-						feature.properties.locName +
-						"<br/><b>Organization Name: </b>" +
-						feature.properties.orgName +
-						"<br/><b>Site Type: </b>" +
-						feature.properties.type +
-						"<br/><b>Result Count: </b>" +
-						feature.properties.resultCnt
-				);
+				//check for sigl data field
+				if (feature.properties.lake_type_id) {
+					lay.bindPopup(
+						"<b>SiGL Site Name: </b>" +
+							feature.properties.name +
+							"<br/><b>Description: </b>" +
+							feature.properties.description
+					);
+				} else {
+					lay.bindPopup(
+						"<b>Site Name: </b>" +
+							feature.properties.name +
+							"<br/><b>Location Name: </b>" +
+							feature.properties.locName +
+							"<br/><b>Organization Name: </b>" +
+							feature.properties.orgName +
+							"<br/><b>Site Type: </b>" +
+							feature.properties.type +
+							"<br/><b>Result Count: </b>" +
+							feature.properties.resultCnt
+					);
+				}
+
 				lay.on("click", function (e) {
 					// check for overlapping sites
 					let locSites = 0;
@@ -350,21 +395,33 @@ export class MapService {
 						}
 					});
 					if (locSites > 1 && e.target._map._zoom < 15) {
-						e.target
-							.getPopup()
-							.setContent(
-								"<b>Site Name: </b>" +
-									feature.properties.name +
-									"<br/><b>Location Name: </b>" +
-									feature.properties.locName +
-									"<br/><b>Organization Name: </b>" +
-									feature.properties.orgName +
-									"<br/><b>Site Type: </b>" +
-									feature.properties.type +
-									"<br/><b>Result Count: </b>" +
-									feature.properties.resultCnt +
-									'<br><b style="color: red;">WARNING: overlapping sites here. Zoom in to access individual sites</b>'
-							);
+						//check for sigl site again
+						if (e.target.feature.properties.lake_type_id) {
+							e.target
+								.getPopup()
+								.setContent(
+									"<b>SiGL Site Name: </b>" +
+										feature.properties.name +
+										"<br/><b>Description: </b>" +
+										feature.properties.description
+								);
+						} else {
+							e.target
+								.getPopup()
+								.setContent(
+									"<b>Site Name: </b>" +
+										feature.properties.name +
+										"<br/><b>Location Name: </b>" +
+										feature.properties.locName +
+										"<br/><b>Organization Name: </b>" +
+										feature.properties.orgName +
+										"<br/><b>Site Type: </b>" +
+										feature.properties.type +
+										"<br/><b>Result Count: </b>" +
+										feature.properties.resultCnt +
+										'<br><b style="color: red;">WARNING: overlapping sites here. Zoom in to access individual sites</b>'
+								);
+						}
 					}
 
 					// if site is already selected, just open the popup
@@ -405,7 +462,7 @@ export class MapService {
 			},
 		}).addTo(this.sitesLayer);
 
-		this.markerClusters = L.markerClusterGroup({
+		/* this.markerClusters = L.markerClusterGroup({
 			showCoverageOnHover: false,
 			maxClusterRadius: 0.05,
 			spiderfyDistanceMultiplier: 2,
@@ -464,12 +521,19 @@ export class MapService {
 		this.markerClusters.addLayer(this.sitesLayer);
 		this.map.addLayer(this.markerClusters);
 
-		this.markerClusters.disableClustering();
+		this.markerClusters.disableClustering(); */
 
 		// zoom
 		// If sites layer has only one site, add extra padding
 		if (geoJson.features.length > 1) {
-			this.map.fitBounds(this.sitesLayer.getBounds(), {
+			//force appropriate latitude for bad coordinates
+			let bounds = this.sitesLayer.getBounds();
+			if (bounds.getSouthWest().lat < 0) {
+				//force hard-coded south cornder
+				let SW = L.latLng(42.1111, bounds.getWest());
+				bounds = L.latLngBounds(SW, bounds.getNorthEast());
+			}
+			this.map.fitBounds(bounds, {
 				padding: [20, 20],
 			});
 		} else if (geoJson.features.length === 1) {
@@ -515,6 +579,7 @@ export class MapService {
 		// colors the site based on what symbology is selected (orgName or searchType/keyword)
 		let fillColor = "";
 		const prop = feature.properties[this.colorBy];
+
 		const cat = self.siteCategories;
 		const col = self.siteColors;
 		if (cat.length > 0) {
@@ -599,6 +664,7 @@ export class MapService {
 			this.addToSitesLayer(this.colorJson);
 		} else {
 			this.addToSitesLayer(this.geoJson);
+			this.addToSitesLayer(this.siglgeoJson);
 		}
 		this.updateLegend();
 	}
@@ -629,7 +695,9 @@ export class MapService {
 				this.siteCategories[i] +
 				"<br>";
 		}
-		item += '<i class="site multiple-types"></i>Multiple</div>';
+		item +=
+			'<i class="site multiple-types"></i>Multiple<br>' +
+			'<i class="site sigl"></i>SiGL Site</div>';
 		div.innerHTML = item;
 
 		if (window.outerWidth < 1200) {

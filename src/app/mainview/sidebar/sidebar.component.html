@@ -85,6 +85,7 @@
 			</div>
 		</div>
 
+		<!--  Sidebar WQP filters  -->
 		<div
 			class="sidebar-header"
 			(click)="showParameterFilters = !showParameterFilters"
@@ -94,7 +95,7 @@
 			<b><span>WQP Filters</span></b>
 		</div>
 
-		<!-- Filters Parameter Content -->
+		<!--WQP Filters Parameter Content -->
 		<div
 			class="sidebar-content"
 			[ngClass]="{ expanded: showParameterFilters }"
@@ -150,8 +151,7 @@
 			</form>
 		</div>
 
-		<!--  Sidebar Site Filters  -->
-
+		<!--  Sidebar WQP Site Filters  -->
 		<div
 			class="sidebar-header"
 			(click)="showSiteFilters = !showSiteFilters"
@@ -239,6 +239,16 @@
 				Clear Selections
 			</button>
 		</div>
+
+		<div
+			class="sidebar-header"
+			(click)="showSiglFilters = !showSiglFilters"
+			[ngClass]="{ expanded: showSiteFilters }"
+		>
+			<i class="fal fa-sliders-v"></i>
+			<b><span>SiGL Site Filters</span></b>
+		</div>
+
 		<!-- End Sidebar Scroll -->
 	</div>
 </div>

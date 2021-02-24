@@ -1,7 +1,7 @@
 on:
     push:
         branches:
-            - staging
+            - master
 name: Deploy to Test Site
 jobs:
     deployToTest:
@@ -14,13 +14,7 @@ jobs:
               with:
                   node-version: "10.15"
             - run: npm run-script build-test
-            - name: Build Failure
-              if: failure()
-              uses: Ilshidur/action-slack@2a8ddb6db23f71a413f9958ae75bbc32bbaa6385
-              env:
-                  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-              with:
-                  args: ":warning: Failed to build project :warning:"
+
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@v1
               with:
@@ -28,15 +22,9 @@ jobs:
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: us-east-2
             - run: aws s3 cp /home/runner/work/CSMI-Planner/CSMI-Planner/dist/ s3://test.wim.usgs.gov/CSMI-Planner/ --recursive
-            - name: AWS Failure
-              if: failure()
-              uses: Ilshidur/action-slack@2a8ddb6db23f71a413f9958ae75bbc32bbaa6385
-              env:
-                  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-              with:
-                  args: ":warning: Failed to deploy to AWS :warning:"
+
             - name: GitHub Action for Slack
-              uses: Ilshidur/action-slack@9273a03
+              uses: Ilshidur/action-slack@a6d9e9ed519555c498265694cf2d7367d9dc6926
               env:
                   SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
               with:

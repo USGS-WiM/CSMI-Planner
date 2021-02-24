@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 
 import { MapService } from "src/app/shared/services/map.service";
+import { SiglService } from "src/app/shared/services/sigl.service";
 import { LoaderService } from "../../shared/services/loader.service";
 import { ConfigService } from "src/app/shared/services/config.service";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -14,7 +15,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class SidebarComponent implements OnInit {
 	public parameterDropDownGroup: FormGroup;
 	public siteDropDownGroup: FormGroup;
+	public siglDropDownGroup: FormGroup;
 	public siteFilterData;
+	public siglFilterData: any;
 	public parameterFilterData;
 	public defaultParameterFilter;
 	public defaultMinResults = 1;
@@ -22,8 +25,12 @@ export class SidebarComponent implements OnInit {
 	showBasemaps = false;
 	showSiteFilters = true;
 	showParameterFilters = true;
+	showSiglFilters = true;
 	expandSidebar = false;
 	chosenBaseLayer;
+
+	public lakeProjects$ = this._siglService.projects$;
+
 	public urlParams = {};
 	public urlCharParam;
 	public urlSelSites;
@@ -47,6 +54,7 @@ export class SidebarComponent implements OnInit {
 
 	constructor(
 		private _mapService: MapService,
+		private _siglService: SiglService,
 		private formBuilder: FormBuilder,
 		private _loaderService: LoaderService,
 		private _configService: ConfigService,
@@ -89,6 +97,15 @@ export class SidebarComponent implements OnInit {
 		};
 
 		this.defaultParameterFilter = "Nitrate";
+
+		/* this._siglService.projects$.subscribe(() => {
+			console.log(
+				"sigl projects in sidebar component: ",
+				this._siglService.projects$
+			);
+		}); */
+
+		this.lakeProjects$ = this._siglService.projects$;
 
 		this.parameterDropDownGroup = this.formBuilder.group({
 			characteristic: [this.defaultParameterFilter],
@@ -172,6 +189,15 @@ export class SidebarComponent implements OnInit {
 			type: [[]],
 		});
 
+		this.siglDropDownGroup = this.formBuilder.group({
+			siglOrg: [[]],
+			lake: [[]],
+			projectName: [[]],
+		});
+
+		this._mapService.getSiglSites().subscribe((response) => {
+			this.siglFilterData = response;
+		});
 		// this is the main data request
 		this._mapService.getData().subscribe((response) => {
 			this.siteFilterData = response;
@@ -468,6 +494,7 @@ export class SidebarComponent implements OnInit {
 		this._mapService.filterJson = this._mapService.geoJson;
 		this.geoJSONsiteCount = this._mapService.geoJson.totalFeatures;
 		this._mapService.addToSitesLayer(this._mapService.filterJson);
+		this._mapService.addToSitesLayer(this._mapService.siglgeoJson); // add sigl points back after clear
 	}
 
 	// called from basemap button click

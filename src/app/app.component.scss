@@ -2,180 +2,180 @@
 // Do not add anything directly to this file.
 // Find the appropriate file within the /styles folder
 
-@import 'variables.scss';
+@import "variables.scss";
 
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
-
-
 // SASS helpers/mixins
-@import '/styles/helpers.scss';
+@import "/styles/helpers.scss";
 
 // Universal Imports
-@import '/styles/structure.scss';
-@import '/styles/text.scss';
-@import '/styles/modals.scss';
-@import '/styles/inputs.scss';
+@import "/styles/structure.scss";
+@import "/styles/text.scss";
+@import "/styles/modals.scss";
+@import "/styles/inputs.scss";
 
-@import '/styles/header.scss';
+@import "/styles/header.scss";
 
-@import '/styles/custom/general.scss';
-@import '/styles/custom/map.scss';
-@import '/styles/custom/authentication.scss';
-
+@import "/styles/custom/general.scss";
+@import "/styles/custom/map.scss";
+@import "/styles/custom/authentication.scss";
 
 // Specific imports
 .info {
-    font: 14px/16px Arial, Helvetica, sans-serif; 
-    background: white; 
-    background: rgba(255,255,255,0.8); 
-    box-shadow: 0 0 15px rgba(0,0,0,0.2); 
-    border-radius: 5px; 
-} 
-.legend { 
-    text-align: left; 
-    line-height: 18px; 
-    color: #555; 
-    .site {
-        border-radius: 50%;
-        opacity: .5;
-        width: 8px;
-        height: 8px;
-        margin-top: 5px;
-    }
-    .multiple-types {
-        background-color: rgba(128,128,128, 1) !important;
-    }
+	font: 14px/16px Arial, Helvetica, sans-serif;
+	background: white;
+	background: rgba(255, 255, 255, 0.8);
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+	border-radius: 5px;
 }
-.legend i { 
-    width: 18px; 
-    height: 18px; 
-    float: left; 
-    margin-right: 8px;}
+.legend {
+	text-align: left;
+	line-height: 18px;
+	color: #555;
+	.site {
+		border-radius: 50%;
+		opacity: 0.5;
+		width: 8px;
+		height: 8px;
+		margin-top: 5px;
+	}
+	.multiple-types {
+		background-color: rgba(128, 128, 128, 1) !important;
+	}
+	.sigl {
+		background-color: #752326 !important;
+	}
+}
+.legend i {
+	width: 18px;
+	height: 18px;
+	float: left;
+	margin-right: 8px;
+}
 
 .multiple-types {
-    background-color: rgba(128,128,128, 0.7) !important;
+	background-color: rgba(128, 128, 128, 0.7) !important;
 }
 
 .marker-cluster div {
-    width: 20px !important;
-    height: 20px !important;
-    border-radius: 20px !important;
+	width: 20px !important;
+	height: 20px !important;
+	border-radius: 20px !important;
 }
 
 .marker-cluster span {
-    line-height: 20px !important;
-    font-size: 11px !important;
+	line-height: 20px !important;
+	font-size: 11px !important;
 }
 
 .marker-cluster-small {
-    width: 30px !important;
-    height: 30px !important;
+	width: 30px !important;
+	height: 30px !important;
 }
 
 /*needed for the marker cluster border*/
 .marker-border-1F777F {
-    background-color: rgba(31,119,127, 0.3) !important;
+	background-color: rgba(31, 119, 127, 0.3) !important;
 }
 .marker-border-E04644 {
-    background-color: rgba(224,70,68,0.3) !important;
+	background-color: rgba(224, 70, 68, 0.3) !important;
 }
 .marker-border-3C69B4 {
-    background-color: rgba(60,105,180,0.3) !important;
+	background-color: rgba(60, 105, 180, 0.3) !important;
 }
 .marker-border-D608A9 {
-    background-color: rgba(214,8,169,0.3) !important;
+	background-color: rgba(214, 8, 169, 0.3) !important;
 }
 .marker-border-9444E0 {
-    background-color: rgba(148,68,224,0.3) !important;
+	background-color: rgba(148, 68, 224, 0.3) !important;
 }
 .marker-border-3CB44B {
-    background-color: rgba(60,180,75,0.3) !important;
+	background-color: rgba(60, 180, 75, 0.3) !important;
 }
 .marker-border-44DEE0 {
-    background-color: rgba(68,222,224,0.3) !important;
+	background-color: rgba(68, 222, 224, 0.3) !important;
 }
 .marker-border-964b41 {
-    background-color: rgba(150,75,65,0.3) !important;
+	background-color: rgba(150, 75, 65, 0.3) !important;
 }
 .marker-border-B4873C {
-    background-color: rgba(180,135,60,0.3) !important;
+	background-color: rgba(180, 135, 60, 0.3) !important;
 }
 .marker-border-4376D3 {
-    background-color: rgba(67,118,211,0.3) !important;
+	background-color: rgba(67, 118, 211, 0.3) !important;
 }
 .marker-border-68D9C3 {
-    background-color: rgba(104,217,195,0.3) !important;
+	background-color: rgba(104, 217, 195, 0.3) !important;
 }
 .marker-border-B7D968 {
-    background-color: rgba(183,217,104,0.3) !important;
+	background-color: rgba(183, 217, 104, 0.3) !important;
 }
 .marker-border-555E7B {
-    background-color: rgba(85,94,123,0.3) !important;
+	background-color: rgba(85, 94, 123, 0.3) !important;
 }
 .border-multiple-types {
-    background-color: rgba(128,128,128, 0.3) !important;
+	background-color: rgba(128, 128, 128, 0.3) !important;
 }
 /*TEMPORARY STYLING UNTIL WE GET THE LIQWIDS DASHBOARD INSERTED HERE*/
-#dashboardTable{
-    display: flex;
-    flex-direction: column;
-    border: 1px solid fade-out($black, 0.8);
-    box-sizing: border-box;
-    padding:  15px;
-    border-radius: 10px;
-    margin-bottom: 45px;
+#dashboardTable {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid fade-out($black, 0.8);
+	box-sizing: border-box;
+	padding: 15px;
+	border-radius: 10px;
+	margin-bottom: 45px;
 
-    .row{
-        display: flex;
-        width: 100%;
+	.row {
+		display: flex;
+		width: 100%;
 
-        &:nth-child(even){
-            background-color: rgba(10,10,50,0.08);
-        }
+		&:nth-child(even) {
+			background-color: rgba(10, 10, 50, 0.08);
+		}
 
-        div{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-            font-size: 12px;
-            line-height: 13px;
-            color: $black;
-            height: 40px;
-            width: 10%;
-            flex-grow: 3;
-            box-sizing: border-box;
-            padding: 0 10px;
-            text-align: left;
+		div {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			text-align: center;
+			font-size: 12px;
+			line-height: 13px;
+			color: $black;
+			height: 40px;
+			width: 10%;
+			flex-grow: 3;
+			box-sizing: border-box;
+			padding: 0 10px;
+			text-align: left;
 
-            &:nth-child(1){
-                font-weight: bolder;
-            }
-        }
+			&:nth-child(1) {
+				font-weight: bolder;
+			}
+		}
 
-        &.header{
-
-            div{
-                font-weight: bolder;
-            }
-        }
-    }
-} 
+		&.header {
+			div {
+				font-weight: bolder;
+			}
+		}
+	}
+}
 
 .mat-sort-header-button:hover {
-    background-color: unset;
+	background-color: unset;
 }
 
 .multiselect-label {
-    display: inline-block;
+	display: inline-block;
 }
 
 .legend label {
-    display: inline-block;
+	display: inline-block;
 }
 
 .legend input {
-    vertical-align: middle;
-    margin-top: -1px;
+	vertical-align: middle;
+	margin-top: -1px;
 }

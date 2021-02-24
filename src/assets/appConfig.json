@@ -1,7 +1,8 @@
 {
-    "geoJsonURL": "https://www.waterqualitydata.us/ogcservices/wfs/",
-    "resultUrl": "https://www.waterqualitydata.us/data/Result/search",
-    "summaryUrl": "https://www.waterqualitydata.us/data/summary/monitoringlocation",
-    "orgUrl": "https://www.waterqualitydata.us/data/Organization",
-    "sumUrlSettings": "/search?mimeType=csv&zip=no&countycode=US%3A36%3A059&countycode=US%3A36%3A103"
+	"geoJsonURL": "https://www.waterqualitydata.us/ogcservices/wfs/",
+	"siglSitesURL": "https://sigl.wim.usgs.gov/SiGLServices/sites.geojson",
+	"resultUrl": "https://www.waterqualitydata.us/data/Result/search",
+	"summaryUrl": "https://www.waterqualitydata.us/data/summary/monitoringlocation",
+	"orgUrl": "https://www.waterqualitydata.us/data/Organization",
+	"sumUrlSettings": "/search?mimeType=csv&zip=no&countycode=US%3A36%3A059&countycode=US%3A36%3A103"
 }
