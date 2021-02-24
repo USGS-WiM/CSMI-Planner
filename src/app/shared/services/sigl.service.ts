@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
+import { ComponentFactoryResolver, Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { map, tap, catchError } from "rxjs/operators";
-import { Observable, throwError } from "rxjs";
+import { map, tap, catchError, mergeMap } from "rxjs/operators";
+import { from, Observable, throwError } from "rxjs";
 
 @Injectable({
 	providedIn: "root",
@@ -9,6 +9,8 @@ import { Observable, throwError } from "rxjs";
 export class SiglService {
 	private HuronProjectsUrl =
 		"https://sigl.wim.usgs.gov/SiGLServices/lakes/2/projects.json";
+
+	private projectSiteUrl = "https://sigl.wim.usgs.gov/SiGLServices/projects/";
 
 	//TODO add project interface
 	public projects = [];
@@ -20,17 +22,21 @@ export class SiglService {
 		map((projectList) => {
 			projectList.map((project) => {
 				this.projects.push(project);
-				/* let projId = project.project_id;
-			this.http
-			  .get<any>(`${this.projectSiteUrl}/${projId}/ProjectFullSites.json`)
-			  .pipe(
-				tap((sites) => console.log('Sites ', JSON.stringify(sites))),
-				catchError(this.handleError)
-			  ); */
 			});
 		}),
 		catchError(this.handleError)
 	);
+
+	/* public getSiglSites(): Observable<any> {
+		return this.http.get<any>(this.siglSitesURL).pipe(
+			tap((response) => console.log(response)),
+			map((response) => {
+				this.siglgeoJjson = response;
+				this.addToSitesLayer(this.siglgeoJjson);
+			}),
+			catchError((error) => this.handleError(error))
+		);
+	} */
 
 	constructor(private http: HttpClient) {}
 

@@ -11,6 +11,7 @@ import { SiglService } from "src/app/shared/services/sigl.service";
 import * as L from "leaflet";
 import { SummariesService } from "src/app/shared/services/summaries.service";
 import { ActivatedRoute } from "@angular/router";
+import { tap } from "rxjs/operators";
 
 @Component({
 	selector: "app-map",
@@ -23,6 +24,7 @@ export class MapComponent implements OnInit {
 	collapsedDataPanel;
 	selectedSites;
 	legendExpanded = true;
+
 	public paramOptions = [
 		"characteristic",
 		"site",
@@ -55,10 +57,6 @@ export class MapComponent implements OnInit {
 
 		this._mapService.DataPanelCollapse.subscribe((collapse) => {
 			this.collapsedDataPanel = collapse;
-		});
-
-		this._siglService.projects$.subscribe((response) => {
-			console.log("map component received sigl projects");
 		});
 
 		// baseMaps
