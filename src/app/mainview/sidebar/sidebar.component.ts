@@ -195,7 +195,7 @@ export class SidebarComponent implements OnInit {
 			projectName: [[]],
 		});
 
-		this._mapService.getSiglSites().subscribe((response) => {
+		this._siglService.getSiglSites().subscribe((response) => {
 			this.siglFilterData = response;
 		});
 		// this is the main data request
@@ -494,7 +494,7 @@ export class SidebarComponent implements OnInit {
 		this._mapService.filterJson = this._mapService.geoJson;
 		this.geoJSONsiteCount = this._mapService.geoJson.totalFeatures;
 		this._mapService.addToSitesLayer(this._mapService.filterJson);
-		this._mapService.addToSitesLayer(this._mapService.siglgeoJson); // add sigl points back after clear
+		//this._mapService.addToSitesLayer(this._mapService.siglgeoJson); // add sigl points back after clear
 	}
 
 	// called from basemap button click
