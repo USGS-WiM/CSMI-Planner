@@ -23,18 +23,19 @@ export class SiglService {
 	public projects = [];
 
 	//get all projects in Huron as Observable
-	projects$ = this.http.get<any>(`${this.HuronProjectsUrl}`).pipe(
-		tap((projectList: any) => {
-			console.log("Huron Projects", projectList);
-		}),
-		map((projectList) => {
-			projectList.map((project) => {
-				this.projects.push(project);
-			});
-		}),
-		catchError(this.handleError)
-	);
-	confgSettings: import("c:/Users/emyers/AppDev/CSMI-Planner/src/app/shared/interfaces/config").Config;
+	public getProjects(): Observable<any> {
+		return this.http.get<any>(`${this.HuronProjectsUrl}`).pipe(
+			tap((projectList: any) => {
+				console.log("Huron Projects", projectList);
+			}),
+			map((projectList) => {
+				projectList.map((project) => {
+					this.projects.push(project);
+				});
+			}),
+			catchError(this.handleError)
+		);
+	}
 
 	//Get ALL sigl sites (filter for Huron in map function)
 	public getSiglSites(): Observable<any> {

@@ -337,13 +337,24 @@ export class MapService {
 				}
 			},
 			onEachFeature: (feature, lay) => {
-				//check for sigl data field
-				if (feature.properties.lake_type_id) {
+				//check for sigl description
+				if (feature.properties.description) {
 					lay.bindPopup(
 						"<b>SiGL Site Name: </b>" +
 							feature.properties.name +
 							"<br/><b>Description: </b>" +
-							feature.properties.description
+							feature.properties.description +
+							"<br/><b>Project Name:</b> " +
+							feature.properties.project_name +
+							"<br/>"
+					);
+				} else {
+					lay.bindPopup(
+						"<b>SiGL Site Name: </b>" +
+							feature.properties.name +
+							"<br/><b>Project Name:</b> " +
+							feature.properties.project_name +
+							"<br/>"
 					);
 				}
 
@@ -361,14 +372,29 @@ export class MapService {
 						}
 					});
 					if (locSites > 1 && e.target._map._zoom < 15) {
-						e.target
-							.getPopup()
-							.setContent(
-								"<b>SiGL Site Name: </b>" +
-									feature.properties.name +
-									"<br/><b>Description: </b>" +
-									feature.properties.description
-							);
+						if (e.target.feature.properties.description) {
+							e.target
+								.getPopup()
+								.setContent(
+									"<b>SiGL Site Name: </b>" +
+										feature.properties.name +
+										"<br/><b>Description: </b>" +
+										feature.properties.description +
+										"<br/><b>Project Name:</b> " +
+										feature.properties.project_name +
+										"<br/>"
+								);
+						} else {
+							e.target
+								.getPopup()
+								.setContent(
+									"<b>SiGL Site Name: </b>" +
+										feature.properties.name +
+										"<br/><b>Project Name:</b> " +
+										feature.properties.project_name +
+										"<br/>"
+								);
+						}
 					}
 
 					// if site is already selected, just open the popup
