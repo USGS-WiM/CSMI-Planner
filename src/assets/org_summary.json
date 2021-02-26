@@ -1,25 +1,93 @@
 [
-	{ "org_name": "USGS Texas Water Science Center", "last_submit": null, "num_samples": 31 },
-	{ "org_name": "USGS Massachusetts Water Science Center", "last_submit": null, "num_samples": 73 },
-	{ "org_name": "NYS Dept. of EnCon,  Division of Water", "last_submit": null, "num_samples": 175 },
+	{
+		"org_name": "USGS Texas Water Science Center",
+		"last_submit": null,
+		"num_samples": 31
+	},
+	{
+		"org_name": "USGS Massachusetts Water Science Center",
+		"last_submit": null,
+		"num_samples": 73
+	},
+	{
+		"org_name": "NYS Dept. of EnCon,  Division of Water",
+		"last_submit": null,
+		"num_samples": 175
+	},
 	{ "org_name": "US EPA Region 1", "last_submit": null, "num_samples": 184 },
-	{ "org_name": "New York State Department of Health", "last_submit": "11-30-2018", "num_samples": 4928 },
-	{ "org_name": "Interstate Environmental Commission", "last_submit": "05-29-2018", "num_samples": 2380 },
-	{ "org_name": "Interstate Environmental Commission (New York)", "last_submit": null, "num_samples": 880 },
-	{ "org_name": "CSC (Computer Sciences Corporation)(Virginia)", "last_submit": "05-29-2012", "num_samples": 35 },
-	{ "org_name": "EPA Region 2", "last_submit": "08-21-2016", "num_samples": 464 },
-	{ "org_name": "Connecticut Fund for the Environment-Save the Sound", "last_submit": "04-01-2019", "num_samples": 516 },
-	{ "org_name": "New York State Dec Division Of Water", "last_submit": "06-17-2015", "num_samples": 5142 },
-	{ "org_name": "Environmental Protection Agency Region 2", "last_submit": "11-21-2017", "num_samples": 394 },
-	{ "org_name": "North American Lake Management Society", "last_submit": "07-21-2017", "num_samples": 63 },
-	{ "org_name": "Environmental Monitoring and Assessment Program", "last_submit": null, "num_samples": 8888 },
+	{
+		"org_name": "New York State Department of Health",
+		"last_submit": "11-30-2018",
+		"num_samples": 4928
+	},
+	{
+		"org_name": "Interstate Environmental Commission",
+		"last_submit": "05-29-2018",
+		"num_samples": 2380
+	},
+	{
+		"org_name": "Interstate Environmental Commission (New York)",
+		"last_submit": null,
+		"num_samples": 880
+	},
+	{
+		"org_name": "CSC (Computer Sciences Corporation)(Virginia)",
+		"last_submit": "05-29-2012",
+		"num_samples": 35
+	},
+	{
+		"org_name": "EPA Region 2",
+		"last_submit": "08-21-2016",
+		"num_samples": 464
+	},
+	{
+		"org_name": "Connecticut Fund for the Environment-Save the Sound",
+		"last_submit": "04-01-2019",
+		"num_samples": 516
+	},
+	{
+		"org_name": "New York State Dec Division Of Water",
+		"last_submit": "06-17-2015",
+		"num_samples": 5142
+	},
+	{
+		"org_name": "Environmental Protection Agency Region 2",
+		"last_submit": "11-21-2017",
+		"num_samples": 394
+	},
+	{
+		"org_name": "North American Lake Management Society",
+		"last_submit": "07-21-2017",
+		"num_samples": 63
+	},
+	{
+		"org_name": "Environmental Monitoring and Assessment Program",
+		"last_submit": null,
+		"num_samples": 8888
+	},
 	{
 		"org_name": "USEPA, Office of Water, Office of Science and Technology, Standards and Health Protection Division",
 		"last_submit": "03-22-2016",
 		"num_samples": 284
 	},
-	{ "org_name": "Suffolk County Department of Health Ecology (New York)", "last_submit": "07-17-2019", "num_samples": 570 },
-	{ "org_name": "National Park Service Water Resources Division", "last_submit": "04-26-2019", "num_samples": 16039 },
-	{ "org_name": "Environmental Monitoring and Assessment Program", "last_submit": "01-11-2013", "num_samples": 7601 },
-	{ "org_name": "USGS New York Water Science Center", "last_submit": null, "num_samples": 784693 }
+	{
+		"org_name": "Suffolk County Department of Health Ecology (New York)",
+		"last_submit": "07-17-2019",
+		"num_samples": 570
+	},
+	{
+		"org_name": "National Park Service Water Resources Division",
+		"last_submit": "04-26-2019",
+		"num_samples": 16039
+	},
+	{
+		"org_name": "Environmental Monitoring and Assessment Program",
+		"last_submit": "01-11-2013",
+		"num_samples": 7601
+	},
+	{
+		"org_name": "USGS New York Water Science Center",
+		"last_submit": null,
+		"num_samples": 784693
+	}
 ]
