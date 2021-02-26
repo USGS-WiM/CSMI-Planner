@@ -15,9 +15,12 @@ export class SiglService {
 
 	private projectSiteUrl = "https://sigl.wim.usgs.gov/SiGLServices/projects/";
 
+	private fullSiteUrl = "https://sigl.wim.usgs.gov/SiGLServices/sites/";
+
 	public siglSitesURL;
 	private configSettings: Config;
 	public siglgeoJson: any;
+	public selectedSite: any;
 
 	//TODO add project interface
 	public projects = [];
@@ -48,6 +51,15 @@ export class SiglService {
 			}),
 			catchError((error) => this.handleError(error))
 		);
+	}
+
+	public getFullSite(siteId): Observable<any> {
+		return this.http
+			.get<any>(`${this.fullSiteUrl}/${siteId}/GetFullSite.json`)
+			.pipe(
+				map((response) => (this.selectedSite = response)),
+				catchError((error) => this.handleError(error))
+			);
 	}
 
 	constructor(

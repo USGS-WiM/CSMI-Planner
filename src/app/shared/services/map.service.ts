@@ -342,19 +342,12 @@ export class MapService {
 					lay.bindPopup(
 						"<b>SiGL Site Name: </b>" +
 							feature.properties.name +
-							"<br/><b>Description: </b>" +
-							feature.properties.description +
-							"<br/><b>Project Name:</b> " +
-							feature.properties.project_name +
-							"<br/>"
+							"<br/><b>Site Description: </b>" +
+							feature.properties.description
 					);
 				} else {
 					lay.bindPopup(
-						"<b>SiGL Site Name: </b>" +
-							feature.properties.name +
-							"<br/><b>Project Name:</b> " +
-							feature.properties.project_name +
-							"<br/>"
+						"<b>SiGL Site Name: </b>" + feature.properties.name
 					);
 				}
 
@@ -378,21 +371,15 @@ export class MapService {
 								.setContent(
 									"<b>SiGL Site Name: </b>" +
 										feature.properties.name +
-										"<br/><b>Description: </b>" +
-										feature.properties.description +
-										"<br/><b>Project Name:</b> " +
-										feature.properties.project_name +
-										"<br/>"
+										"<br/><b>Site Description: </b>" +
+										feature.properties.description
 								);
 						} else {
 							e.target
 								.getPopup()
 								.setContent(
 									"<b>SiGL Site Name: </b>" +
-										feature.properties.name +
-										"<br/><b>Project Name:</b> " +
-										feature.properties.project_name +
-										"<br/>"
+										feature.properties.name
 								);
 						}
 					}

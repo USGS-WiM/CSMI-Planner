@@ -1,45 +1,44 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 
 // Modal adjusttmenst
-:host ::ng-deep #reportModal{
+:host ::ng-deep #reportModal {
 	width: 90%;
 	max-width: 800px;
 	height: 100%;
 }
 
 // Print area
-#printArea{
+#printArea {
 	padding: 30px 30px 0 30px;
 	box-sizing: border-box;
 
 	// Chart options
-	.chart-options{
+	.chart-options {
 		display: block;
 		margin: 0 auto;
 
 		// group title
-		.chart-options-title{
+		.chart-options-title {
 			display: block;
 			margin: 15px 0 5px 0;
 			font-size: 14px;
 			font-weight: 400;
 		}
-		
+
 		// Contains inputs
 		.chart-options-radio,
-		.chart-options-checkbox{
+		.chart-options-checkbox {
 			margin: 0 12px 5px 0;
 			display: inline-flex;
 
-			label{
+			label {
 				font-size: 12px;
 			}
 		}
-
 	}
 
 	// Charts
-	#modalCharts{
+	#modalCharts {
 		display: flex;
 		justify-content: space-between;
 	}
@@ -47,8 +46,7 @@
 // Print media queries. Hide everything except printArea.
 // Then adjust printarea to take up full height and width
 @media print {
-
-	#printArea{
+	#printArea {
 		position: fixed;
 		display: block;
 		top: 0px;
@@ -60,286 +58,317 @@
 		z-index: 50000;
 		height: fit-content !important;
 	}
-
 }
 
+.dataLabel {
+	font-weight: bolder;
+}
 
+.card-item {
+	padding: 5px;
+}
 
+div.card-header {
+	font-size: large;
+}
+
+div.card {
+	margin-top: 10px;
+}
+
+table {
+	margin-top: 10px;
+	border: 3px solid "#8cb6f5";
+}
+th {
+	text-align: center;
+}
+td {
+	padding: 5px;
+}
+
+tbody tr:nth-child(odd) {
+	background-color: #8cb6f5;
+}
+
+tbody tr:nth-child(even) {
+	background-color: #ffffff;
+}
 
 // Go through this eventually,
 // A lot of it probably is not needed
-#noData{
-    color: $red;
-    font-size: 14px;
-    display: block;
-    padding-left: 25px;
+#noData {
+	color: $red;
+	font-size: 14px;
+	display: block;
+	padding-left: 25px;
 }
 
 #noGraphData {
-    text-align: center;
-    color: $red;
+	text-align: center;
+	color: $red;
 }
 
-#dataView{
-    display: block;
-    box-sizing: border-box;
-    position: relative;
-    width: 100%;
-    max-width: 100%;
+#dataView {
+	display: block;
+	box-sizing: border-box;
+	position: relative;
+	width: 100%;
+	max-width: 100%;
 	margin: 0;
 	transition: 0.175s ease;
 	height: fit-content;
 
-    @media only screen and (max-width: 1200px) {
-        padding: 5px;
-    }
-
-    &.data-blur{
-        padding: 0px;
-        // Blur everything except the loader
-        *:not(#dataLoader){
-            filter: blur(2px);
-        }
-    }
-
-    &.collapsed {
-		display: none;
-    }
-
-    // Site meta
-    // Name, id, etc
-    .site-meta{
-        display: block;
-        box-sizing: border-box;
-
-        h1{
-            font-size: 26px;
-            font-weight: 600;
-        }
-
-        h3{
-            font-size: 18px;
-            font-weight: 500;
-        }
+	@media only screen and (max-width: 1200px) {
+		padding: 5px;
 	}
-	
+
+	&.data-blur {
+		padding: 0px;
+		// Blur everything except the loader
+		*:not(#dataLoader) {
+			filter: blur(2px);
+		}
+	}
+
+	&.collapsed {
+		display: none;
+	}
+
+	// Site meta
+	// Name, id, etc
+	.site-meta {
+		display: block;
+		box-sizing: border-box;
+
+		h1 {
+			font-size: 26px;
+			font-weight: 600;
+		}
+
+		h3 {
+			font-size: 18px;
+			font-weight: 500;
+		}
+	}
+
 	// Padding around different elements
-	.dataview-padding{
-        padding: 15px 25px;
-    }
-    
+	.dataview-padding {
+		padding: 15px 25px;
+	}
 }
 
-.chart-wrapper{
-    box-sizing: border-box;
+.chart-wrapper {
+	box-sizing: border-box;
 	padding: 20px 0;
-    display: flex;
-    justify-content: space-between;
-    margin: 10px auto;
-    max-width: 90%;
+	display: flex;
+	justify-content: space-between;
+	margin: 10px auto;
+	max-width: 90%;
 
-    @media only screen and (max-width: 700px) {
+	@media only screen and (max-width: 700px) {
 		flex-direction: column;
-    }
+	}
 }
 
-.multSiteCharts{
-    @media only screen and (max-width: 1200px) {
-        display: block !important;
-        margin-bottom: 50px;
-    }
+.multSiteCharts {
+	@media only screen and (max-width: 1200px) {
+		display: block !important;
+		margin-bottom: 50px;
+	}
 }
 
-:host ::ng-deep .new-charts{
-    display: block;
-    margin: 0 auto;
-    width: 50%;
-    @media only screen and (max-width: 700px) {
-        width: 100%;
-    }
+:host ::ng-deep .new-charts {
+	display: block;
+	margin: 0 auto;
+	width: 50%;
+	@media only screen and (max-width: 700px) {
+		width: 100%;
+	}
 }
 
-#dataTable{
-    display: flex;
-    flex-direction: column;
-    border: 1px solid fade-out($black, 0.8);
-    box-sizing: border-box;
-    padding:  15px;
-    border-radius: 10px;
-    margin-bottom: 55px;
+#dataTable {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid fade-out($black, 0.8);
+	box-sizing: border-box;
+	padding: 15px;
+	border-radius: 10px;
+	margin-bottom: 55px;
 
-    tr{
-        display: flex;
-        width: 100%;
+	tr {
+		display: flex;
+		width: 100%;
 
-        &:nth-child(even){
-            background-color: rgba(10,10,50,0.08);
-        }
+		&:nth-child(even) {
+			background-color: rgba(10, 10, 50, 0.08);
+		}
 
-        td,th{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-            font-size: 12px;
-            line-height: 13px;
-            color: $black;
-            height: 40px;
-            width: 10%;
-            flex-grow: 3;
-            box-sizing: border-box;
-            padding: 0 10px;
-            text-align: left;
-            word-break: break-word;
+		td,
+		th {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			text-align: center;
+			font-size: 12px;
+			line-height: 13px;
+			color: $black;
+			height: 40px;
+			width: 10%;
+			flex-grow: 3;
+			box-sizing: border-box;
+			padding: 0 10px;
+			text-align: left;
+			word-break: break-word;
 
-            @media only screen and (max-width: 1200px) {
-                height: unset;
-                min-height: 40px;
-                padding: 1px;
-            }
+			@media only screen and (max-width: 1200px) {
+				height: unset;
+				min-height: 40px;
+				padding: 1px;
+			}
 
-            &:nth-child(1){
-                font-weight: bolder;
-            }
-        }
+			&:nth-child(1) {
+				font-weight: bolder;
+			}
+		}
 
-        &.header{
-
-            div{
-                font-weight: bolder;
-            }
-        }
-    }
+		&.header {
+			div {
+				font-weight: bolder;
+			}
+		}
+	}
 }
-
 
 select {
-    border: 0;
-    background-color: #fff;
-    border-bottom: 2px solid #e0e3e6;
-    line-height: inherit;
-    padding: 0 10px;
-    height: 24px;
-    display: inline-block;
+	border: 0;
+	background-color: #fff;
+	border-bottom: 2px solid #e0e3e6;
+	line-height: inherit;
+	padding: 0 10px;
+	height: 24px;
+	display: inline-block;
 }
 
-.hidden{
-    display: none !important;
+.hidden {
+	display: none !important;
 }
 
-button{
-    margin: 45px 5px 5px 0px;
+button {
+	margin: 45px 5px 5px 0px;
 }
 
-i{
-    padding: 5px;
+i {
+	padding: 5px;
 }
-
-
 
 #modalTable {
-    margin: 5px;
-    margin-bottom: 0px;
+	margin: 5px;
+	margin-bottom: 0px;
 }
 
 :host ::ng-deep {
-    @media print{
-        body * {
-            visibility: hidden;
-            -webkit-print-color-adjust: exact !important;
-        }
-        .hidden-print {
-            display: none !important;
-        }
-        .modal, .modal-wrapper{
-            page-break-inside: auto;
-            /**Remove scrollbar for printing.**/
-            overflow: visible !important;
-            /**Needs to be relative for printing in IE11**/
-            position: absolute;
-            left: 0;
-            top: 0;
-            margin: 0;
-            padding-right:20px;
-            min-height:550px;
-            visibility: visible;
-            width: 100%;
-            height: 100%;
-        }
-        .modal-dialog, .modal-content {
-            width: 100%;
-            padding: 0;
-            margin:20px;
-            visibility: visible !important;
-            /**Remove scrollbar for printing.**/
-            overflow: visible !important;
-        }
-        .modal-footer {
-            border-top:0;
-        }
-        .leaflet-control-container{
-            display: none!important;
-        }
-    
-        .new-charts {
-            overflow: unset;
-            width: 100% !important;
-            display: inline-block !important;
-        }
-    
-        #modalTable{
-            page-break-inside: auto;
-            border: none;
-            tr, td, th{
-                page-break-before: auto;
-                page-break-inside: avoid !important;
-                page-break-after: auto;
-            }
-            th{
-                font-weight: bold;
-            }
-        }
+	@media print {
+		body * {
+			visibility: hidden;
+			-webkit-print-color-adjust: exact !important;
+		}
+		.hidden-print {
+			display: none !important;
+		}
+		.modal,
+		.modal-wrapper {
+			page-break-inside: auto;
+			/**Remove scrollbar for printing.**/
+			overflow: visible !important;
+			/**Needs to be relative for printing in IE11**/
+			position: absolute;
+			left: 0;
+			top: 0;
+			margin: 0;
+			padding-right: 20px;
+			min-height: 550px;
+			visibility: visible;
+			width: 100%;
+			height: 100%;
+		}
+		.modal-dialog,
+		.modal-content {
+			width: 100%;
+			padding: 0;
+			margin: 20px;
+			visibility: visible !important;
+			/**Remove scrollbar for printing.**/
+			overflow: visible !important;
+		}
+		.modal-footer {
+			border-top: 0;
+		}
+		.leaflet-control-container {
+			display: none !important;
+		}
 
-        .identifier {
-            padding-bottom: 2em;
-        }
-        #invalid-point-msg{
-            text-align: left !important;
-            margin-left: 5px;
-        }
-    }
-    #invalid-point-msg{
-        display: inline-block;
-        padding: .2em .6em .3em;
-        //margin: 0px 20%;
-        font-size: 85%;
-        font-weight: 500;
-        background-color: #e1ad01;
-        color: #fff;
-        text-align: center;
-        border-radius: .4em;
-    }
-    #invalid-msg-div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .fa-list{
-        margin-top: 3px;
-    }
+		.new-charts {
+			overflow: unset;
+			width: 100% !important;
+			display: inline-block !important;
+		}
 
-    @media print and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-        /* IE10+ CSS styles go here */
-        .modal {
-            /**Needs to be relative for printing in IE11**/
-            position: relative;
-        }
-    }
+		#modalTable {
+			page-break-inside: auto;
+			border: none;
+			tr,
+			td,
+			th {
+				page-break-before: auto;
+				page-break-inside: avoid !important;
+				page-break-after: auto;
+			}
+			th {
+				font-weight: bold;
+			}
+		}
+
+		.identifier {
+			padding-bottom: 2em;
+		}
+		#invalid-point-msg {
+			text-align: left !important;
+			margin-left: 5px;
+		}
+	}
+	#invalid-point-msg {
+		display: inline-block;
+		padding: 0.2em 0.6em 0.3em;
+		//margin: 0px 20%;
+		font-size: 85%;
+		font-weight: 500;
+		background-color: #e1ad01;
+		color: #fff;
+		text-align: center;
+		border-radius: 0.4em;
+	}
+	#invalid-msg-div {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.fa-list {
+		margin-top: 3px;
+	}
+
+	@media print and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+		/* IE10+ CSS styles go here */
+		.modal {
+			/**Needs to be relative for printing in IE11**/
+			position: relative;
+		}
+	}
 }
 
-.selectionButton{
-    margin: 15px 0px !important;
+.selectionButton {
+	margin: 15px 0px !important;
 }
-#single{
-    opacity: .80;
+#single {
+	opacity: 0.8;
 }
