@@ -40,8 +40,6 @@ export class MapService {
 	public highlightMarkers = [];
 	public markerClusters;
 	public geoJsonURL;
-	public siglSitesURL;
-	public siglgeoJson: any; //switch to type geojson later?
 	public colorJson = []; // for symbolizing sites if site filters applied
 	public selectMultSites = false;
 	// for symbolizing by keyword or organization
@@ -144,7 +142,6 @@ export class MapService {
 	) {
 		this.configSettings = this._configService.getConfiguration();
 		this.geoJsonURL = this.configSettings.geoJsonURL;
-		this.siglSitesURL = this.configSettings.siglSitesURL;
 		this.chosenBaseLayer = "Topo";
 
 		this.baseMaps = {
@@ -288,17 +285,6 @@ export class MapService {
 			);
 	}
 
-	public getSiglSites(): Observable<any> {
-		return this._http.get<any>(this.siglSitesURL).pipe(
-			tap((response) => console.log(response)),
-			map((response) => {
-				this.siglgeoJson = response;
-				this.addToSitesLayer(this.siglgeoJson);
-			}),
-			catchError((error) => this.handleError(error))
-		);
-	}
-
 	private handleError(err: HttpErrorResponse) {
 		if (err instanceof TimeoutError) {
 			console.error(
@@ -322,7 +308,7 @@ export class MapService {
 		return throwError("HTTPClient error.");
 	}
 
-	public addToSitesLayer(geoJson: any) {
+	public addToSiglLayer(geoJson: any) {
 		const self = this;
 		if (this.markerClusters) {
 			this.markerClusters.remove();
@@ -339,45 +325,29 @@ export class MapService {
 		const layer = L.geoJSON(geoJson, {
 			pointToLayer: function (feature, latLng) {
 				// only add SIGL Lake Huron sites
-				if (
-					feature.properties.lake_type_id &&
-					feature.properties.lake_type_id == 2
-				) {
+				if (feature.properties.lake_type_id == 2) {
 					const marker = {
 						radius: 4,
-						fillColor: "#752326",
+						fillColor: "#364e4a",
 						weight: 0,
-						opacity: 1,
-						fillOpacity: 0.5,
+						opacity: 0.5,
+						fillOpacity: 0.45,
 					};
-					return L.circleMarker(latLng, marker);
-				} else if (!feature.properties.lake_type_id) {
-					//add everything else that's not sigl
-					const marker = self.setMarker(feature, self);
 					return L.circleMarker(latLng, marker);
 				}
 			},
 			onEachFeature: (feature, lay) => {
-				//check for sigl data field
-				if (feature.properties.lake_type_id) {
+				//check for sigl description
+				if (feature.properties.description) {
 					lay.bindPopup(
 						"<b>SiGL Site Name: </b>" +
 							feature.properties.name +
-							"<br/><b>Description: </b>" +
+							"<br/><b>Site Description: </b>" +
 							feature.properties.description
 					);
 				} else {
 					lay.bindPopup(
-						"<b>Site Name: </b>" +
-							feature.properties.name +
-							"<br/><b>Location Name: </b>" +
-							feature.properties.locName +
-							"<br/><b>Organization Name: </b>" +
-							feature.properties.orgName +
-							"<br/><b>Site Type: </b>" +
-							feature.properties.type +
-							"<br/><b>Result Count: </b>" +
-							feature.properties.resultCnt
+						"<b>SiGL Site Name: </b>" + feature.properties.name
 					);
 				}
 
@@ -395,33 +365,126 @@ export class MapService {
 						}
 					});
 					if (locSites > 1 && e.target._map._zoom < 15) {
-						//check for sigl site again
-						if (e.target.feature.properties.lake_type_id) {
+						if (e.target.feature.properties.description) {
 							e.target
 								.getPopup()
 								.setContent(
 									"<b>SiGL Site Name: </b>" +
 										feature.properties.name +
-										"<br/><b>Description: </b>" +
+										"<br/><b>Site Description: </b>" +
 										feature.properties.description
 								);
 						} else {
 							e.target
 								.getPopup()
 								.setContent(
-									"<b>Site Name: </b>" +
-										feature.properties.name +
-										"<br/><b>Location Name: </b>" +
-										feature.properties.locName +
-										"<br/><b>Organization Name: </b>" +
-										feature.properties.orgName +
-										"<br/><b>Site Type: </b>" +
-										feature.properties.type +
-										"<br/><b>Result Count: </b>" +
-										feature.properties.resultCnt +
-										'<br><b style="color: red;">WARNING: overlapping sites here. Zoom in to access individual sites</b>'
+									"<b>SiGL Site Name: </b>" +
+										feature.properties.name
 								);
 						}
+					}
+
+					// if site is already selected, just open the popup
+					let run = true;
+					if (self.selectedSiteLayer) {
+						self.selectedSiteLayer.eachLayer((site) => {
+							if (
+								site._latlng["lat"] === this._latlng["lat"] &&
+								site._latlng["lng"] === this._latlng["lng"]
+							) {
+								run = false;
+							}
+						});
+					}
+					if (run) {
+						// control key used to select multiple sites
+						if (!e.originalEvent.ctrlKey && !self.selectMultSites) {
+							if (self.selectedSiteLayer) {
+								self.highlightMarkers.forEach((marker) =>
+									self.selectedSiteLayer.remove(marker)
+								);
+							}
+							self.highlightMarkers = [];
+							self.highlightSelectedSite(e);
+							self._selectedSiteSubject.next(
+								e.target.feature.properties
+							);
+						} else {
+							self.highlightSelectedSite(e);
+							self._selectMultSubject.next(
+								e.target.feature.properties
+							);
+						}
+					} else {
+						this.openPopup();
+					}
+				});
+			},
+		}).addTo(this.siglLayer);
+	}
+
+	public addToSitesLayer(geoJson: any) {
+		const self = this;
+		if (this.markerClusters) {
+			this.markerClusters.remove();
+		}
+		if (this.selectedSiteLayer) {
+			this.highlightMarkers.forEach((marker) =>
+				this.selectedSiteLayer.remove(marker)
+			);
+			this.selectedSiteLayer.eachLayer((lay) => {
+				this.selectedSiteLayer.removeLayer(lay);
+			});
+		}
+		this.highlightMarkers = [];
+		const layer = L.geoJSON(geoJson, {
+			pointToLayer: function (feature, latLng) {
+				const marker = self.setMarker(feature, self);
+				return L.circleMarker(latLng, marker);
+			},
+			onEachFeature: (feature, lay) => {
+				lay.bindPopup(
+					"<b>Site Name: </b>" +
+						feature.properties.name +
+						"<br/><b>Location Name: </b>" +
+						feature.properties.locName +
+						"<br/><b>Organization Name: </b>" +
+						feature.properties.orgName +
+						"<br/><b>Site Type: </b>" +
+						feature.properties.type +
+						"<br/><b>Result Count: </b>" +
+						feature.properties.resultCnt
+				);
+
+				lay.on("click", function (e) {
+					// check for overlapping sites
+					let locSites = 0;
+					geoJson.features.forEach((ft) => {
+						const coord = ft.geometry.coordinates;
+						const featCoord = this._latlng;
+						if (
+							coord[0].toFixed(3) === featCoord.lng.toFixed(3) &&
+							coord[1].toFixed(3) === featCoord.lat.toFixed(3)
+						) {
+							locSites++;
+						}
+					});
+					if (locSites > 1 && e.target._map._zoom < 15) {
+						e.target
+							.getPopup()
+							.setContent(
+								"<b>Site Name: </b>" +
+									feature.properties.name +
+									"<br/><b>Location Name: </b>" +
+									feature.properties.locName +
+									"<br/><b>Organization Name: </b>" +
+									feature.properties.orgName +
+									"<br/><b>Site Type: </b>" +
+									feature.properties.type +
+									"<br/><b>Result Count: </b>" +
+									feature.properties.resultCnt +
+									'<br><b style="color: red;">WARNING: overlapping sites here. Zoom in to access individual sites</b>'
+							);
 					}
 
 					// if site is already selected, just open the popup
@@ -664,7 +727,6 @@ export class MapService {
 			this.addToSitesLayer(this.colorJson);
 		} else {
 			this.addToSitesLayer(this.geoJson);
-			this.addToSitesLayer(this.siglgeoJson);
 		}
 		this.updateLegend();
 	}

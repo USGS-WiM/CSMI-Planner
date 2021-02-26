@@ -1,135 +1,359 @@
-<div id="dataView" [ngClass]="{'collapsed': collapsedPanel }">
+<div id="dataView" [ngClass]="{ collapsed: collapsedPanel }">
+	<app-dataloader-div id="dataLoader"></app-dataloader-div>
 
-    <app-dataloader-div id="dataLoader"></app-dataloader-div>
+	<div class="site-meta dataview-padding">
+		<h1>Data</h1>
 
-
-    <div class="site-meta dataview-padding">
-        <h1>Data</h1>
-        <button class="selectionButton" *ngIf="!selectMultSites" type="button" id="clickPolyButton" (click)="toggleSelectMultSites(true)">
-            <i class="fa fa-plus"></i>&nbsp;&nbsp;Select Multiple Sites
-        </button>
-        <button class="selectionButton" *ngIf="selectMultSites"type="button" id="clickPolyButton" (click)="toggleSelectMultSites(false)">
-            <i class="fa fa-stop"></i>&nbsp;&nbsp;Finish selecting
-        </button>
-        <div *ngIf="showSiteData && !noData">
-            <h3><b>Sites:</b> {{selectedSites.join(", ")}}</h3>
-            <h3 *ngIf="!selectMultSites"><b>Characteristics:</b> {{charsWithData.join(", ")}}</h3>
-            <h3 *ngIf="eventYear"><b>Event Year: </b>{{eventYear}}</h3>
-        </div>
-    </div>
-
-    <div [class.hidden]="showSiteData || noData" class="chart-wrapper multSiteCharts">
-        <div class="chart" id="typeChart"></div>
-        <div class="chart" id="orgChart"></div>
-    </div>
-
-    <div [class.hidden]="!showSiteData || noData || selectMultSites">
-		
-		<div class="dataview-padding">
-            <div *ngIf="charTypes.length > 1">
-                <label class="charType">Measurement Type:</label>
-                <select [(ngModel)]="selectedChar" (change)="createCharts($event.target.value, false)">
-                    <option *ngFor="let char of charTypes" [value]="char">{{char}}</option>
-                </select>
-			</div>
-			
-            <div class="chart-options" [class.hidden]="noGraphData">
-                <label class="charType">Chart Type (Y-Axis):</label>
-				<span style="padding-right:10px">
-					<input type="radio" (click)="setYaxisType('linear')" value="linear" [checked]="chartType === 'linear' ? true : false"/>Linear
+		<div *ngIf="selectedProject" class="card">
+			<div class="card-header">
+				<span class="dataLabel" *ngIf="selectedProject">
+					SiGL Project Name:
 				</span>
 				<span>
-					<input type="radio" (click)="setYaxisType('logarithmic')" value="logarithmic" [checked]="chartType === 'logarithmic' ? true : false"/>Logarithmic
+					{{ selectedProject.name }}
 				</span>
-            </div>
-        </div>
-		
-		<!-- Charts -->
-        <div class="chart-wrapper" id="charts"></div>
-		<!-- No data to graph -->
-        <div class="dataview-padding" *ngIf="noGraphData" id="noGraphData">
-            <h5>No data points to graph.</h5>
-        </div>
+			</div>
+			<div class="card-body">
+				<div class="card-item">
+					<span class="dataLabel">Project Description: </span>
+					<span>{{ selectedProject.description }}</span>
+				</div>
+				<div class="card-item" *ngIf="selectedProject?.url">
+					<span class="dataLabel">Project Website: </span>
+					<a [href]="selectedProject.url" target="_blank">{{
+						selectedProject.url
+					}}</a>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="selectedSiglSite" class="card">
+			<div class="card-header">
+				<h3>
+					<b>Selected SiGL Site Name:</b> {{ selectedSiglSite.Name }}
+				</h3>
+			</div>
+			<span *ngIf="selectedSiglSite" class="card-body">
+				<div class="card-item" *ngIf="selectedSiglSite.Waterbody">
+					<span class="dataLabel">Waterbody: </span>
+					<span>{{ selectedSiglSite.Waterbody }}</span>
+				</div>
+				<div class="card-item" *ngIf="selectedSiglSite.Watershed">
+					<span class="dataLabel">Watershed (HUC8): </span>
+					<span>{{ selectedSiglSite.Watershed }}</span>
+				</div>
+				<div class="card-item" *ngIf="selectedSiglSite.Description">
+					<span class="dataLabel">Site Description: </span>
+					<span>{{ selectedSiglSite.Description }}</span>
+				</div>
+				<div class="card-item">
+					<span class="dataLabel">State: </span>
+					<span>{{ selectedSiglSite.State }}</span>
+				</div>
+				<div class="card-item" *ngIf="selectedSiglSite.StartDate">
+					<span class="dataLabel">Start Date: </span>
+					<span>{{
+						selectedSiglSite.StartDate | date: "MM/dd/yyyy"
+					}}</span>
+				</div>
+				<div class="card-item" *ngIf="selectedSiglSite.EndDate">
+					<span class="dataLabel">End Date: </span>
+					<span>{{
+						selectedSiglSite.EndDate | date: "MM/dd/yyyy"
+					}}</span>
+				</div>
+				<div class="card-item" *ngIf="selectedSiglSite.Status">
+					<span class="dataLabel">Status: </span>
+					<span>{{ selectedSiglSite.Status }}</span>
+				</div>
+				<div class="card-item" *ngIf="selectedSiglSite.SamplePlatform">
+					<span class="dataLabel">Sampling Platform: </span>
+					<span>{{ selectedSiglSite.SamplePlatform }}</span>
+				</div>
+				<div
+					class="card-item"
+					*ngIf="selectedSiglSite.Resources.length > 0"
+				>
+					<span class="dataLabel">Resource Component: </span>
+					<ul>
+						<li *ngFor="let R of selectedSiglSite.Resources">
+							{{ R.resource_name }}
+						</li>
+					</ul>
+				</div>
+				<div
+					class="card-item"
+					*ngIf="selectedSiglSite?.Parameters.length > 0"
+				>
+					<span class="dataLabel">Parameters Sampled:</span>
+					<ul>
+						<li *ngFor="let param of selectedSiglSite.Parameters">
+							{{ param.parameter }}
+						</li>
+					</ul>
+				</div>
+				<div
+					class="card-item"
+					*ngIf="selectedSiglSite.Media.length > 0"
+				>
+					<span class="dataLabel">Media: </span>
+					<ul>
+						<li *ngFor="let M of selectedSiglSite.Media">
+							{{ M.media }}
+						</li>
+					</ul>
+				</div>
+				<div
+					class="card-item"
+					*ngIf="selectedSiglSite.Frequencies.length > 0"
+				>
+					<span class="dataLabel">Sampling Frequency: </span>
+					<ul>
+						<li *ngFor="let F of selectedSiglSite.Frequencies">
+							{{ F.frequency }}
+						</li>
+					</ul>
+				</div>
+				<div class="card-item" *ngIf="selectedSiglSite.url">
+					<span class="dataLabel">Site Website: </span>
+					<a target="blank" [href]="selectedSiglSite?.url">{{
+						selectedSiglSite.url
+					}}</a>
+				</div>
+				<div class="card-item" *ngIf="selectedSiglSite.AdditionalInfo">
+					<span class="dataLabel">Additional Site Information: </span>
+					<span>{{ selectedSiglSite.AdditionalInfo }}</span>
+				</div>
+			</span>
+			<div>
+				_____________________________________________________________________________________________
+			</div>
+		</div>
 
-		<div style="text-align: center;" [class.hidden]="noGraphData">
+		<button
+			class="selectionButton"
+			*ngIf="!selectMultSites"
+			type="button"
+			id="clickPolyButton"
+			(click)="toggleSelectMultSites(true)"
+		>
+			<i class="fa fa-plus"></i>&nbsp;&nbsp;Select Multiple Sites
+		</button>
+		<button
+			class="selectionButton"
+			*ngIf="selectMultSites"
+			type="button"
+			id="clickPolyButton"
+			(click)="toggleSelectMultSites(false)"
+		>
+			<i class="fa fa-stop"></i>&nbsp;&nbsp;Finish selecting
+		</button>
+		<div *ngIf="showSiteData && !noData">
+			<h3><b>Sites:</b> {{ selectedSites.join(", ") }}</h3>
+			<h3 *ngIf="!selectMultSites">
+				<b>Characteristics:</b> {{ charsWithData.join(", ") }}
+			</h3>
+			<h3 *ngIf="eventYear"><b>Event Year: </b>{{ eventYear }}</h3>
+		</div>
+	</div>
+
+	<div
+		[class.hidden]="showSiteData || noData"
+		class="chart-wrapper multSiteCharts"
+	>
+		<div class="chart" id="typeChart"></div>
+		<div class="chart" id="orgChart"></div>
+	</div>
+
+	<div [class.hidden]="!showSiteData || noData || selectMultSites">
+		<div class="dataview-padding">
+			<div *ngIf="charTypes.length > 1">
+				<label class="charType">Measurement Type:</label>
+				<select
+					[(ngModel)]="selectedChar"
+					(change)="createCharts($event.target.value, false)"
+				>
+					<option *ngFor="let char of charTypes" [value]="char">
+						{{ char }}
+					</option>
+				</select>
+			</div>
+
+			<div class="chart-options" [class.hidden]="noGraphData">
+				<label class="charType">Chart Type (Y-Axis):</label>
+				<span style="padding-right: 10px">
+					<input
+						type="radio"
+						(click)="setYaxisType('linear')"
+						value="linear"
+						[checked]="chartType === 'linear' ? true : false"
+					/>Linear
+				</span>
+				<span>
+					<input
+						type="radio"
+						(click)="setYaxisType('logarithmic')"
+						value="logarithmic"
+						[checked]="chartType === 'logarithmic' ? true : false"
+					/>Logarithmic
+				</span>
+			</div>
+		</div>
+
+		<!-- Charts -->
+		<div class="chart-wrapper" id="charts"></div>
+		<!-- No data to graph -->
+		<div class="dataview-padding" *ngIf="noGraphData" id="noGraphData">
+			<h5>No data points to graph.</h5>
+		</div>
+
+		<div style="text-align: center" [class.hidden]="noGraphData">
 			<i class="fa fa-mouse-pointer"></i>
 			Drag a box around points on the graph to zoom in
 		</div>
 
-
-        <div class="dataview-padding">
-            <button (click)="downloadFile()"><i class="fa fa-file-download"></i>Download Results CSV</button>
-            <button (click)="makeModalChart()"><i class="fa fa-book-open"></i>Report</button>
-            <table id="dataTable">
-                <thead>
-                    <tr class="row header">
-                        <th *ngIf="selectedSites.length > 1">Site Name</th>
-                        <th>Activity Start Date</th>
-                        <th>Characteristic</th>
-                        <th>Depth</th>
-                        <th>Value</th>
-                        <th>Fraction</th>
-                        <th>Provider</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let sample of resultJson" class="row">
-                        <td *ngIf="selectedSites.length > 1">{{sample.MonitoringLocationIdentifier}}</td>
-                        <td>{{sample.ActivityStartDate}}</td>
-                        <td>{{sample.CharacteristicName}}</td>
-                        <td *ngIf="sample['ActivityDepthHeightMeasure/MeasureValue']">{{sample['ActivityDepthHeightMeasure/MeasureValue']}}
-                            {{sample['ActivityDepthHeightMeasure/MeasureUnitCode']}}</td>
-                        <td *ngIf="!sample['ActivityDepthHeightMeasure/MeasureValue']">{{sample['ActivityBottomDepthHeightMeasure/MeasureValue']}}
-                            {{sample['ActivityBottomDepthHeightMeasure/MeasureUnitCode']}}</td>
-                        <td *ngIf="sample.ResultDetectionConditionText !== 'Not Detected'">{{sample.ResultMeasureValue}} {{sample['ResultMeasure/MeasureUnitCode']}}</td>
-                        <td *ngIf="sample.ResultDetectionConditionText === 'Not Detected'">{{sample.ResultDetectionConditionText}}</td>
-                        <td>{{sample.ResultSampleFractionText}}</td>
-                        <td>{{sample.ProviderName}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-    <div *ngIf="noData" id="noData">
-        <h2>No data was returned</h2>
-    </div>
+		<div class="dataview-padding">
+			<button (click)="downloadFile()">
+				<i class="fa fa-file-download"></i>Download Results CSV
+			</button>
+			<button (click)="makeModalChart()">
+				<i class="fa fa-book-open"></i>Report
+			</button>
+			<table id="dataTable">
+				<thead>
+					<tr class="row header">
+						<th *ngIf="selectedSites.length > 1">Site Name</th>
+						<th>Activity Start Date</th>
+						<th>Characteristic</th>
+						<th>Depth</th>
+						<th>Value</th>
+						<th>Fraction</th>
+						<th>Provider</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let sample of resultJson" class="row">
+						<td *ngIf="selectedSites.length > 1">
+							{{ sample.MonitoringLocationIdentifier }}
+						</td>
+						<td>{{ sample.ActivityStartDate }}</td>
+						<td>{{ sample.CharacteristicName }}</td>
+						<td
+							*ngIf="
+								sample[
+									'ActivityDepthHeightMeasure/MeasureValue'
+								]
+							"
+						>
+							{{
+								sample[
+									"ActivityDepthHeightMeasure/MeasureValue"
+								]
+							}}
+							{{
+								sample[
+									"ActivityDepthHeightMeasure/MeasureUnitCode"
+								]
+							}}
+						</td>
+						<td
+							*ngIf="
+								!sample[
+									'ActivityDepthHeightMeasure/MeasureValue'
+								]
+							"
+						>
+							{{
+								sample[
+									"ActivityBottomDepthHeightMeasure/MeasureValue"
+								]
+							}}
+							{{
+								sample[
+									"ActivityBottomDepthHeightMeasure/MeasureUnitCode"
+								]
+							}}
+						</td>
+						<td
+							*ngIf="
+								sample.ResultDetectionConditionText !==
+								'Not Detected'
+							"
+						>
+							{{ sample.ResultMeasureValue }}
+							{{ sample["ResultMeasure/MeasureUnitCode"] }}
+						</td>
+						<td
+							*ngIf="
+								sample.ResultDetectionConditionText ===
+								'Not Detected'
+							"
+						>
+							{{ sample.ResultDetectionConditionText }}
+						</td>
+						<td>{{ sample.ResultSampleFractionText }}</td>
+						<td>{{ sample.ProviderName }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div *ngIf="noData" id="noData">
+		<h2>No data was returned</h2>
+	</div>
 </div>
 
 <!-- Report Modal -->
 <div class="modal-wrapper" *ngIf="showModal" (click)="showModal = false">
-    <div class="modal" id="reportModal" (click)="$event.stopPropagation()">
+	<div class="modal" id="reportModal" (click)="$event.stopPropagation()">
 		<!-- Modal title -->
-        <div class="modal-header hidden-print">
-            <div class="title">Report</div>
-            <div class="modal-close" (click)="showModal = false">&times;</div>
+		<div class="modal-header hidden-print">
+			<div class="title">Report</div>
+			<div class="modal-close" (click)="showModal = false">&times;</div>
 		</div>
 		<!-- Modal body / Printarea -->
-        <div class="modal-content">
-           
+		<div class="modal-content">
 			<!-- Print area -->
 			<div id="printArea">
-				<h4>Sites: {{selectedSites.join(", ")}}</h4>
-				<h4>Characteristics: {{charsWithData.join(", ")}}</h4>
-				<h4 *ngIf="eventYear"><b>Event Year: </b>{{eventYear}}</h4>
+				<h4>Sites: {{ selectedSites.join(", ") }}</h4>
+				<h4>Characteristics: {{ charsWithData.join(", ") }}</h4>
+				<h4 *ngIf="eventYear"><b>Event Year: </b>{{ eventYear }}</h4>
 
 				<!-- Measurement type -->
 				<div *ngIf="charTypes.length > 1" class="chart-options">
-					<div class="chart-options-title">Measurement Type: </div>
-					<select [(ngModel)]="selectedChar" (change)="createCharts($event.target.value, true)">
-						<option *ngFor="let char of charTypes" [value]="char">{{char}}</option>
+					<div class="chart-options-title">Measurement Type:</div>
+					<select
+						[(ngModel)]="selectedChar"
+						(change)="createCharts($event.target.value, true)"
+					>
+						<option *ngFor="let char of charTypes" [value]="char">
+							{{ char }}
+						</option>
 					</select>
 				</div>
 
 				<!-- Chart type -->
 				<div class="chart-options" [class.hidden]="noGraphData">
-					<div class="chart-options-title">Chart Type (Y-Axis): </div>
+					<div class="chart-options-title">Chart Type (Y-Axis):</div>
 					<div class="chart-options-radio">
-						<input type="radio" id="chartTypeLinear" (click)="setYaxisType('linear')" value="linear" [checked]="chartType === 'linear' ? true : false"/>
+						<input
+							type="radio"
+							id="chartTypeLinear"
+							(click)="setYaxisType('linear')"
+							value="linear"
+							[checked]="chartType === 'linear' ? true : false"
+						/>
 						<label for="chartTypeLinear">Linear</label>
 					</div>
 					<div class="chart-options-radio">
-						<input type="radio" id="charttTypeLogarithmic" (click)="setYaxisType('logarithmic')" value="logarithmic" [checked]="chartType === 'logarithmic' ? true : false"/>
+						<input
+							type="radio"
+							id="charttTypeLogarithmic"
+							(click)="setYaxisType('logarithmic')"
+							value="logarithmic"
+							[checked]="
+								chartType === 'logarithmic' ? true : false
+							"
+						/>
 						<label for="charttTypeLogarithmic">Logarithmic</label>
 					</div>
 				</div>
@@ -139,7 +363,9 @@
 		</div>
 		<!-- Modal footer with print button -->
 		<div class="modal-actions center">
-            <button (click)="printReport()"><i class="fa fa-print"></i>Print</button>
+			<button (click)="printReport()">
+				<i class="fa fa-print"></i>Print
+			</button>
 		</div>
-    </div>
+	</div>
 </div>

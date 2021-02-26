@@ -243,12 +243,44 @@
 		<div
 			class="sidebar-header"
 			(click)="showSiglFilters = !showSiglFilters"
-			[ngClass]="{ expanded: showSiteFilters }"
+			[ngClass]="{ expanded: showSiglFilters }"
 		>
-			<i class="fal fa-sliders-v"></i>
+			<i class="fal fa-crow"></i>
 			<b><span>SiGL Site Filters</span></b>
 		</div>
 
+		<div class="sidebar-content" [ngClass]="{ expanded: showSiglFilters }">
+			<form
+				*ngIf="siglFilterData"
+				[formGroup]="siglDropDownGroup"
+				id="sidebarSiglFilters"
+			>
+				<label for="project" class="multiselect-label"
+					>Project Name</label
+				>
+				<ng-select
+					formControlName="project"
+					[items]="siglFilterData"
+					[multiple]="true"
+					bindLabel="name"
+					bindValue="project_id"
+					placeholder="Select"
+				>
+				</ng-select>
+				<!-- <label for="greatLake" class="multiselect-label"
+					>Great Lake</label
+				>
+				<ng-select
+					formControlName="greatLake"
+					[items]="siglFilterData"
+					[multiple]="true"
+					bindLabel="name"
+					bindValue="lake_type_id"
+					placeholder="Select"
+				>
+				</ng-select> -->
+			</form>
+		</div>
 		<!-- End Sidebar Scroll -->
 	</div>
 </div>

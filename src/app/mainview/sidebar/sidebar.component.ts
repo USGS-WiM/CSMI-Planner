@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 
 import { MapService } from "src/app/shared/services/map.service";
@@ -6,30 +6,34 @@ import { SiglService } from "src/app/shared/services/sigl.service";
 import { LoaderService } from "../../shared/services/loader.service";
 import { ConfigService } from "src/app/shared/services/config.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_FACTORY } from "@angular/cdk/overlay/typings/overlay-directives";
+import { map, tap } from "rxjs/operators";
 
 @Component({
 	selector: "app-sidebar",
 	templateUrl: "./sidebar.component.html",
 	styleUrls: ["./sidebar.component.scss"],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent implements OnInit {
 	public parameterDropDownGroup: FormGroup;
 	public siteDropDownGroup: FormGroup;
 	public siglDropDownGroup: FormGroup;
 	public siteFilterData;
-	public siglFilterData: any;
+	public siglFilterData;
+	public siglSiteFilterData: any;
 	public parameterFilterData;
 	public defaultParameterFilter;
 	public defaultMinResults = 1;
 	public geoJSONsiteCount;
 	showBasemaps = false;
 	showSiteFilters = true;
+	showSiglFilters = false;
 	showParameterFilters = true;
-	showSiglFilters = true;
 	expandSidebar = false;
 	chosenBaseLayer;
 
-	public lakeProjects$ = this._siglService.projects$;
+	public lakeProjects;
 
 	public urlParams = {};
 	public urlCharParam;
@@ -98,14 +102,13 @@ export class SidebarComponent implements OnInit {
 
 		this.defaultParameterFilter = "Nitrate";
 
-		/* this._siglService.projects$.subscribe(() => {
-			console.log(
-				"sigl projects in sidebar component: ",
-				this._siglService.projects$
-			);
-		}); */
-
-		this.lakeProjects$ = this._siglService.projects$;
+		//fire sigl service data request
+		this._siglService.getSiglSites().subscribe((response) => {
+			console.log("site geojson data", response);
+		});
+		this._siglService.getProjects().subscribe((response) => {
+			this.siglFilterData = this._siglService.projects;
+		});
 
 		this.parameterDropDownGroup = this.formBuilder.group({
 			characteristic: [this.defaultParameterFilter],
@@ -190,17 +193,13 @@ export class SidebarComponent implements OnInit {
 		});
 
 		this.siglDropDownGroup = this.formBuilder.group({
-			siglOrg: [[]],
-			lake: [[]],
-			projectName: [[]],
+			project: [[]],
 		});
 
-		this._mapService.getSiglSites().subscribe((response) => {
-			this.siglFilterData = response;
-		});
 		// this is the main data request
 		this._mapService.getData().subscribe((response) => {
 			this.siteFilterData = response;
+			console.log("site filter data", this.siteFilterData);
 			this._mapService.colorJson = [];
 			this._mapService.siteCategories = [];
 			const self = this;
@@ -494,7 +493,7 @@ export class SidebarComponent implements OnInit {
 		this._mapService.filterJson = this._mapService.geoJson;
 		this.geoJSONsiteCount = this._mapService.geoJson.totalFeatures;
 		this._mapService.addToSitesLayer(this._mapService.filterJson);
-		this._mapService.addToSitesLayer(this._mapService.siglgeoJson); // add sigl points back after clear
+		//this._mapService.addToSitesLayer(this._mapService.siglgeoJson); // add sigl points back after clear
 	}
 
 	// called from basemap button click
