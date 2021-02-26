@@ -8,7 +8,12 @@
 <div id="sidebar" [ngClass]="{ expanded: expandSidebar }">
 	<!--  Sidebar Parameter Filters  -->
 	<div id="siteCount">
-		<b>{{ geoJSONsiteCount }}</b> sites showing
+		<div>
+			<b>{{ geoJSONsiteCount }}</b> WQP sites showing
+		</div>
+		<div>
+			<b>{{ siglSiteCount }}</b> SiGL sites showing
+		</div>
 	</div>
 
 	<!-- Scrolling sidebar content -->
