@@ -43,7 +43,7 @@ export class SiglService {
 	//Get ALL sigl sites (filter for Huron in map function)
 	public getSiglSites(): Observable<any> {
 		return this.http.get<any>(this.siglSitesURL).pipe(
-			tap((response) => console.log(response)),
+			//tap((response) => console.log("All Sigl Sites: ", response)),
 			map((response) => {
 				//todo: create a subject to accept next values in map service
 				this.siglgeoJson = response;

@@ -8,6 +8,7 @@ import { ConfigService } from "src/app/shared/services/config.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_FACTORY } from "@angular/cdk/overlay/typings/overlay-directives";
 import { map, tap } from "rxjs/operators";
+import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
 
 @Component({
 	selector: "app-sidebar",
@@ -103,9 +104,7 @@ export class SidebarComponent implements OnInit {
 		this.defaultParameterFilter = "Nitrate";
 
 		//fire sigl service data request
-		this._siglService.getSiglSites().subscribe((response) => {
-			console.log("site geojson data", response);
-		});
+		this._siglService.getSiglSites().subscribe();
 		this._siglService.getProjects().subscribe((response) => {
 			this.siglFilterData = this._siglService.projects;
 		});
@@ -192,14 +191,15 @@ export class SidebarComponent implements OnInit {
 			type: [[]],
 		});
 
+		//value must match lookup property in the sigl geoJosn feature.properties
 		this.siglDropDownGroup = this.formBuilder.group({
-			project: [[]],
+			project_id: [[]],
 		});
 
 		// this is the main data request
 		this._mapService.getData().subscribe((response) => {
 			this.siteFilterData = response;
-			console.log("site filter data", this.siteFilterData);
+			//console.log("site filter data", this.siteFilterData);
 			this._mapService.colorJson = [];
 			this._mapService.siteCategories = [];
 			const self = this;
@@ -328,6 +328,11 @@ export class SidebarComponent implements OnInit {
 			this.parameterSelections = selections;
 		});
 
+		this.siglDropDownGroup.valueChanges.subscribe((selections) => {
+			//console.log("filter subscription: ", selections);
+			this.filterSiglJSON(selections);
+		});
+
 		// on site dropdown change just re-filter geojson
 		this.siteDropDownGroup.valueChanges.subscribe((selections) => {
 			// remove selected sites from url
@@ -429,6 +434,41 @@ export class SidebarComponent implements OnInit {
 			}
 			this._mapService.updateLegend();
 		});
+	}
+
+	public filterSiglJSON(selections: any): void {
+		console.log("Sigl Filter Values", selections);
+		let filterJson;
+		this._mapService.siglLayer.clearLayers();
+		filterJson = JSON.parse(JSON.stringify(this._siglService.siglgeoJson));
+		filterJson.features = [];
+
+		this._siglService.siglgeoJson.features.forEach((feature) => {
+			// assume we have a match for this feature until proven otherwise
+			let match = true;
+
+			// need to check if the site matches all the selected values
+			for (const selection in selections) {
+				// make sure this selection has a value
+				if (selections[selection].length > 0) {
+					// check if this feature DOESN'T MATCH the selection
+					if (
+						selections[selection].indexOf(
+							feature.properties[selection]
+						) === -1
+					) {
+						// doesnt meet this selection so set flag to false
+						match = false;
+					}
+				}
+			}
+			// if we still have a match, its a keeper
+			if (match) {
+				filterJson.features.push(feature);
+			}
+		});
+
+		this._mapService.addToSiglLayer(filterJson);
 	}
 
 	public filterGeoJSON(selections: any): void {
