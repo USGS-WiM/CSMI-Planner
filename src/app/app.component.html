@@ -186,58 +186,50 @@ accessing the site anyway by using the inspector to change the CSS properties --
 
 			<div class="modal-content">
 				<tabs>
-					<tab [tabTitle]="'About LIQWIDS'">
+					<tab [tabTitle]="'About CSMI Planner'">
 						<br />
-						<h6>What is LIQWIDS?</h6>
+						<h6>What is the CSMI Planner?</h6>
 
 						<p>
-							There are more than 60 organizations and agencies
-							collecting water-quality data on Long Island. As a
-							result, those interested in analyzing data may be
-							unaware of what data exist and how those data can be
-							obtained without a Freedom of Information Law
-							request. This web tool is intended to provide a
-							unified view of the water-quality data available, in
-							support of ongoing efforts such as LINAP, LICAP, and
-							other State and local environmental and human health
-							initiatives. This product was developed by USGS in
-							partnership with New York State Department of
-							Environmental Conservation
+							To best support the
+							<a
+								href="https://www.epa.gov/great-lakes-monitoring/cooperative-science-and-monitoring-initiative-csmi"
+								target="_blank"
+								>Cooperative Science and Monitoring Initiative
+								(CSMI)</a
+							>
+							planning each year an intensive project discovery
+							effort is needed to identify spatial and topical
+							gaps in previous and ongoing monitoring efforts.
+							Previously, the
+							<a
+								href="https://sigl.wim.usgs.gov/sig/"
+								target="_blank"
+								>Science in the Great Lakes (SiGL)</a
+							>
+							application sought to provide this information.
+						</p>
+
+						<p>
+							This new CSMI Planning application combines
+							voluntarily-managed SiGL data as well as Water
+							Quality Portal data in an effort to capture a more
+							accurate representation of projects and monitoring
+							sites in the Great Lakes. In preparation for the
+							2022 Lake Huron CSMI planning, this application
+							specifically focuses on efforts in the Lake Huron
+							Basin.
 						</p>
 					</tab>
-					<tab [tabTitle]="'Contributing Organizations'">
+					<!-- remove summaries for now-->
+					<!-- <tab [tabTitle]="'Contributing Organizations'">
 						<br />
 						<h6>Water Quality Portal</h6>
 						<p style="margin-bottom: 0">
 							Summary of Data Submission
 						</p>
 						<app-summary></app-summary>
-						<!-- <div id="dashboardTable">
-					<div class="row header">
-						<div>Date</div>
-						<div>Site</div>
-						<div>State</div>
-						<div>Color</div>
-						<div>Distance</div>
-						<div>Size</div>
-						<div>Status</div>
-						<div>Amount</div>
-						<div>Notes</div>
-					</div>
-
-					<div class="row">
-						<div>10/11/18</div>
-						<div>12512</div>
-						<div>NY</div>
-						<div>Red</div>
-						<div>10mi</div>
-						<div>8</div>
-						<div>Off</div>
-						<div>9</div>
-						<div></div>
-					</div>
-				</div> -->
-					</tab>
+					</tab> -->
 					<tab [tabTitle]="'Disclaimers'">
 						<br />
 						<h6>USGS Data Disclaimer:</h6>

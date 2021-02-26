@@ -27,6 +27,7 @@ export class SidebarComponent implements OnInit {
 	public defaultParameterFilter;
 	public defaultMinResults = 1;
 	public geoJSONsiteCount;
+	public siglSiteCount;
 	showBasemaps = false;
 	showSiteFilters = true;
 	showSiglFilters = false;
@@ -108,6 +109,7 @@ export class SidebarComponent implements OnInit {
 		this._siglService.getProjects().subscribe((response) => {
 			this.siglFilterData = this._siglService.projects;
 		});
+		this.siglSiteCount = this._mapService.siglSiteCount;
 
 		this.parameterDropDownGroup = this.formBuilder.group({
 			characteristic: [this.defaultParameterFilter],
@@ -330,6 +332,10 @@ export class SidebarComponent implements OnInit {
 
 		this.siglDropDownGroup.valueChanges.subscribe((selections) => {
 			//console.log("filter subscription: ", selections);
+			console.log(
+				"site count before add:",
+				this._mapService.siglSiteCount
+			);
 			this.filterSiglJSON(selections);
 		});
 
@@ -436,12 +442,14 @@ export class SidebarComponent implements OnInit {
 		});
 	}
 
+	//Todo: This logic should really be done in the sigl service
 	public filterSiglJSON(selections: any): void {
 		console.log("Sigl Filter Values", selections);
 		let filterJson;
 		this._mapService.siglLayer.clearLayers();
 		filterJson = JSON.parse(JSON.stringify(this._siglService.siglgeoJson));
 		filterJson.features = [];
+		this.siglSiteCount = 0;
 
 		this._siglService.siglgeoJson.features.forEach((feature) => {
 			// assume we have a match for this feature until proven otherwise
@@ -469,6 +477,8 @@ export class SidebarComponent implements OnInit {
 		});
 
 		this._mapService.addToSiglLayer(filterJson);
+		this.siglSiteCount = this._mapService.siglSiteCount;
+		console.log("sigl sites after filter:", this._mapService.siglSiteCount);
 	}
 
 	public filterGeoJSON(selections: any): void {

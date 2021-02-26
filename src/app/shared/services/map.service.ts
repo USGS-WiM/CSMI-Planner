@@ -42,6 +42,7 @@ export class MapService {
 	public geoJsonURL;
 	public colorJson = []; // for symbolizing sites if site filters applied
 	public selectMultSites = false;
+	public siglSiteCount: number;
 	// for symbolizing by keyword or organization
 	public siteColors = [
 		"#3cb44b",
@@ -309,6 +310,7 @@ export class MapService {
 	}
 
 	public addToSiglLayer(geoJson: any) {
+		this.siglSiteCount = 0;
 		const self = this;
 		if (this.markerClusters) {
 			this.markerClusters.remove();
@@ -338,6 +340,7 @@ export class MapService {
 			},
 			onEachFeature: (feature, lay) => {
 				//check for sigl description
+				this.siglSiteCount++;
 				if (feature.properties.description) {
 					lay.bindPopup(
 						"<b>SiGL Site Name: </b>" +
