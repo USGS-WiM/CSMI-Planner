@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 
 import { MapService } from "src/app/shared/services/map.service";
@@ -14,7 +14,6 @@ import { connectableObservableDescriptor } from "rxjs/internal/observable/Connec
 	selector: "app-sidebar",
 	templateUrl: "./sidebar.component.html",
 	styleUrls: ["./sidebar.component.scss"],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent implements OnInit {
 	public parameterDropDownGroup: FormGroup;
@@ -105,7 +104,10 @@ export class SidebarComponent implements OnInit {
 		this.defaultParameterFilter = "Nitrate";
 
 		//fire sigl service data request
-		this._siglService.getSiglSites().subscribe();
+		this._siglService.getSiglSites().subscribe((response) => {
+			//this._mapService.addToSiglLayer(this._siglService.siglgeoJson);
+			this.siglSiteCount = this._mapService.siglSiteCount;
+		});
 		this._siglService.getProjects().subscribe((response) => {
 			this.siglFilterData = this._siglService.projects;
 		});
