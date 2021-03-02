@@ -104,6 +104,8 @@ export class SidebarComponent implements OnInit {
 		this.defaultParameterFilter = "Nitrate";
 
 		//fire sigl service data request
+		//console.log(this._mapService.getBbox());
+
 		this._siglService.getSiglSites().subscribe((response) => {
 			//this._mapService.addToSiglLayer(this._siglService.siglgeoJson);
 			this.siglSiteCount = this._mapService.siglSiteCount;

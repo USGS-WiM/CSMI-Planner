@@ -1,4 +1,8 @@
-import { Injectable } from "@angular/core";
+import {
+	Injectable,
+	ɵCompiler_compileModuleSync__POST_R3__,
+} from "@angular/core";
+
 import {
 	HttpClient,
 	HttpErrorResponse,
@@ -21,6 +25,7 @@ import "leaflet";
 import * as esri from "esri-leaflet";
 import "leaflet.markercluster";
 import "leaflet.markercluster.freezable";
+import * as xml2js from "xml2js";
 import { ConfigService } from "./config.service";
 import { Config } from "../interfaces/config";
 import { CustomQueryEncoderHelper } from "./customEncoder";
@@ -74,6 +79,9 @@ export class MapService {
 	private configSettings: Config;
 	public timeoutTime = 180000; // 3 min timeouts
 
+	public NWISURL: string =
+		"https://waterservices.usgs.gov/nwis/iv/?format=json&";
+	NWISsites: any;
 	public URLparams = {
 		request: "GetFeature",
 		service: "wfs",
@@ -90,6 +98,7 @@ export class MapService {
 	public selectedSiteLayer: any;
 	// send selected sites/characteristics to dataview
 	public _selectedSiteSubject = new Subject();
+
 	public get SelectedSite(): Observable<any> {
 		return this._selectedSiteSubject.asObservable();
 	}
@@ -236,6 +245,32 @@ export class MapService {
 			),
 		};
 	}
+
+	/* public getNWIS(): Observable<any> {
+		//bBox=-85.3225708,43.1130142,-80.9280396,45.0987303&siteType=&siteStatus=active
+		const bbox = this.getBbox();
+		const parameterCode = "00065,63160,72214";
+		const siteType = "OC,OC-CO,ES,LK,ST,ST-CA,ST-DCH,ST-TS";
+		const siteStatus = "active";
+
+		const queryUrl =
+			this.NWISURL +
+			"bBox=" +
+			bbox +
+			"&parameterCd=" +
+			parameterCode +
+			"&siteType=" +
+			siteType +
+			"&siteStatus=" +
+			siteStatus;
+
+		return this._http.get<any>(queryUrl).pipe(
+			map((response) => {
+
+				console.log("response from timeseries", response);
+			})
+		);
+	} */
 
 	public getData(): Observable<any> {
 		this._loaderService.showFullPageLoad();
@@ -772,9 +807,63 @@ export class MapService {
 		}
 	}
 
+	public getBbox() {
+		return (
+			this.map.getBounds().getSouthWest().lng.toFixed(7) +
+			"," +
+			this.map.getBounds().getSouthWest().lat.toFixed(7) +
+			"," +
+			this.map.getBounds().getNorthEast().lng.toFixed(7) +
+			"," +
+			this.map.getBounds().getNorthEast().lat.toFixed(7)
+		);
+	}
+
+	public addToNwisLayer(): void {
+		const NWISmarker = L.divIcon({
+			name: "NWIS",
+			iconAnchor: [7, 10],
+			popupAnchor: [0, 2],
+		});
+		let NWISmarkers = {};
+		this.NWISsites.forEach((site) => {
+			console.log(site);
+			let siteID = site.$.sno;
+			let siteName = site.$.sna;
+			let lat = site.$.lat;
+			let lng = site.$.lng;
+			NWISmarkers[siteID] = L.circleMarker([lat, lng], {
+				icon: NWISmarker,
+			});
+			NWISmarkers[siteID].data = { siteName: siteName, SiteCode: siteID };
+
+			//https://nwis.waterdata.usgs.gov/nwis/uv?site_no=04137005
+			let siteUrl =
+				"https://nwis.waterdata.usgs.gov/nwis/uv?site_no=" + siteID;
+
+			NWISmarkers[siteID].bindPopup(
+				"<b>NWIS Site Name: </b>" +
+					siteName +
+					"</br><b>Site Id: </b> " +
+					siteID +
+					"</br><b>Site URL: </b><a href='" +
+					siteUrl +
+					"' target=_'blank'>" +
+					siteUrl +
+					"</a>"
+			);
+
+			this.nwisLayer.addLayer(NWISmarkers[siteID]);
+		});
+		this.nwisLayer.addTo(this.map);
+	}
+
 	// use extent to get NWIS rt gages based on bounding box, display on map
-	public queryNWISrtGages(bbox: string): Observable<any> {
+	public queryNWISrtGages(): Observable<any> {
 		const NWISmarkers = {};
+		//const bbox = this.getBbox();
+		//debug
+		const bbox = "-84.3505249,44.5102175,-80.6506348,45.2884143";
 
 		// NWIS query options from http://waterservices.usgs.gov/rest/IV-Test-Tool.html
 		const parameterCodeList = "00065,62619,62620,63160,72214";
@@ -794,7 +883,17 @@ export class MapService {
 
 		return this._http.get(url, { responseType: "text" }).pipe(
 			map((response) => {
-				return response;
+				xml2js.parseString(response, (err, result) => {
+					console.log("result: ", result);
+					this.NWISsites = result.mapper.sites[0].site;
+					this.addToNwisLayer();
+					/* result.mapper.sites[0].site.forEach((site) => {
+						console.log(site);
+					}); */
+					//this.NWISsites = result.mapper.sites[0].site;
+				});
+
+				//console.log("nwis sites", this.NWISsites);
 			})
 		);
 	}

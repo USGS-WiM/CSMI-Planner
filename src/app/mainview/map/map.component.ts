@@ -110,6 +110,7 @@ export class MapComponent implements OnInit {
 		};
 
 		this._mapService.legend.addTo(this._mapService.map);
+		this._mapService.queryNWISrtGages().subscribe();
 
 		/// NOT FINISHED CLUSTERING
 		/* this._mapService.map.on("load moveend zoomend", (e) => {
