@@ -104,16 +104,15 @@ export class SidebarComponent implements OnInit {
 		this.defaultParameterFilter = "Nitrate";
 
 		//fire sigl service data request
-		//console.log(this._mapService.getBbox());
-
 		this._siglService.getSiglSites().subscribe((response) => {
-			//this._mapService.addToSiglLayer(this._siglService.siglgeoJson);
+			//set siteCount after response is returned
+			//TODO: create sitecount as Observable in siglService or mapservice
 			this.siglSiteCount = this._mapService.siglSiteCount;
 		});
 		this._siglService.getProjects().subscribe((response) => {
+			//TODO: create subject getter/setter in service
 			this.siglFilterData = this._siglService.projects;
 		});
-		this.siglSiteCount = this._mapService.siglSiteCount;
 
 		this.parameterDropDownGroup = this.formBuilder.group({
 			characteristic: [this.defaultParameterFilter],

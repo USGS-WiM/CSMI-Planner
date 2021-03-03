@@ -862,16 +862,21 @@ export class MapService {
 	public queryNWISrtGages(): Observable<any> {
 		const NWISmarkers = {};
 		//const bbox = this.getBbox();
-		//debug
-		const bbox = "-84.3505249,44.5102175,-80.6506348,45.2884143";
+		//debug -- BBOX is returning only for very small areas
+		//const bbox = "-43.505249,41.5102175,-72.6506348,47.2884143";
+		//-94.5043945,41.3932943,-72.9052734,47.6505876
 
 		// NWIS query options from http://waterservices.usgs.gov/rest/IV-Test-Tool.html
+		const huc = "04";
 		const parameterCodeList = "00065,62619,62620,63160,72214";
 		const siteTypeList = "OC,OC-CO,ES,LK,ST,ST-CA,ST-DCH,ST-TS";
 		const siteStatus = "active";
 		const url =
-			"https://waterservices.usgs.gov/nwis/site/?format=mapper&bBox=" +
-			bbox +
+			"https://waterservices.usgs.gov/nwis/site/?format=mapper" +
+			/* "&bBox=" +
+			bbox + */
+			"&huc=" +
+			huc +
 			"&parameterCd=" +
 			parameterCodeList +
 			"&siteType=" +
@@ -887,13 +892,7 @@ export class MapService {
 					console.log("result: ", result);
 					this.NWISsites = result.mapper.sites[0].site;
 					this.addToNwisLayer();
-					/* result.mapper.sites[0].site.forEach((site) => {
-						console.log(site);
-					}); */
-					//this.NWISsites = result.mapper.sites[0].site;
 				});
-
-				//console.log("nwis sites", this.NWISsites);
 			})
 		);
 	}
