@@ -461,6 +461,64 @@ export class MapService {
 		}).addTo(this.siglLayer);
 	}
 
+	public addToNwisLayer(): void {
+		/* if (this.selectedSiteLayer) {
+			this.highlightMarkers.forEach((marker) =>
+				this.selectedSiteLayer.remove(marker)
+			);
+			this.selectedSiteLayer.eachLayer((lay) => {
+				this.selectedSiteLayer.removeLayer(lay);
+			});
+		} */
+
+		const NWISmarker = {
+			radius: 4,
+			fillColor: "black",
+			weight: 0,
+			opacity: 1,
+			fillOpacity: 0.5,
+		};
+		let NWISmarkers = {};
+		this.NWISsites.forEach((site) => {
+			let siteID = site.$.sno;
+			let siteName = site.$.sna;
+			let lat = site.$.lat;
+			let lng = site.$.lng;
+			NWISmarkers[siteID] = L.circleMarker([lat, lng], NWISmarker);
+			NWISmarkers[siteID].data = { siteName: siteName, SiteCode: siteID };
+
+			let siteUrl =
+				"https://waterdata.usgs.gov/monitoring-location/" + siteID;
+
+			NWISmarkers[siteID]
+				.bindPopup(
+					"<b>USGS Realtime Gage Name: </b>" +
+						siteName +
+						"</br><b>Site Id: </b> " +
+						siteID +
+						"</br><b>Site URL: </b><a href='" +
+						siteUrl +
+						"' target=_'blank'>" +
+						siteUrl +
+						"</a>"
+				)
+				.on("click", (e) => {
+					console.log("event", e);
+
+					if (this.selectedSiteLayer) {
+						this.highlightMarkers.forEach((marker) =>
+							this.selectedSiteLayer.remove(marker)
+						);
+						this.highlightMarkers = [];
+						this.highlightSelectedSite(e);
+						this._selectedSiteSubject.next(e.target);
+					}
+				});
+			this.nwisLayer.addLayer(NWISmarkers[siteID]);
+		});
+		this.nwisLayer.addTo(this.map);
+	}
+
 	public addToSitesLayer(geoJson: any) {
 		const self = this;
 		if (this.markerClusters) {
@@ -798,7 +856,7 @@ export class MapService {
 		item +=
 			'<i class="site multiple-types"></i>Multiple<br>' +
 			'<i class="site sigl"></i>SiGL Site<br>' +
-			'<i class="site nwis"></i>NWIS Site</div>';
+			'<i class="site nwis"></i>USGS Realtime Gage</div>';
 		div.innerHTML = item;
 
 		if (window.outerWidth < 1200) {
@@ -820,47 +878,6 @@ export class MapService {
 		);
 	}
 
-	public addToNwisLayer(): void {
-		const NWISmarker = {
-			radius: 4,
-			fillColor: "black",
-			weight: 0,
-			opacity: 1,
-			fillOpacity: 0.5,
-		};
-		let NWISmarkers = {};
-		this.NWISsites.forEach((site) => {
-			let siteID = site.$.sno;
-			let siteName = site.$.sna;
-			let lat = site.$.lat;
-			let lng = site.$.lng;
-			NWISmarkers[siteID] = L.circleMarker([lat, lng], NWISmarker);
-			NWISmarkers[siteID].data = { siteName: siteName, SiteCode: siteID };
-
-			//Old-style NWIS site page
-			/* let siteUrl =
-			"https://nwis.waterdata.usgs.gov/nwis/uv?site_no=" + siteID; */
-			//Next-gen NWIS site page
-			let siteUrl =
-				"https://waterdata.usgs.gov/monitoring-location/" + siteID;
-
-			NWISmarkers[siteID].bindPopup(
-				"<b>NWIS Site Name: </b>" +
-					siteName +
-					"</br><b>Site Id: </b> " +
-					siteID +
-					"</br><b>Site URL: </b><a href='" +
-					siteUrl +
-					"' target=_'blank'>" +
-					siteUrl +
-					"</a>"
-			);
-
-			this.nwisLayer.addLayer(NWISmarkers[siteID]);
-		});
-		this.nwisLayer.addTo(this.map);
-	}
-
 	// use extent to get NWIS rt gages based on bounding box, display on map
 	public queryNWISrtGages(): Observable<any> {
 		const NWISmarkers = {};
@@ -871,8 +888,8 @@ export class MapService {
 
 		// NWIS query options from http://waterservices.usgs.gov/rest/IV-Test-Tool.html
 		const huc = "04";
-		const parameterCodeList = "00065,62619,62620,63160,72214";
-		const siteTypeList = "OC,OC-CO,ES,LK,ST,ST-CA,ST-DCH,ST-TS";
+		const parameterCodeList = "00065,00060,72214";
+		const siteTypeList = "ST";
 		const siteStatus = "active";
 		const url =
 			"https://waterservices.usgs.gov/nwis/site/?format=mapper" +
@@ -892,6 +909,8 @@ export class MapService {
 		return this._http.get(url, { responseType: "text" }).pipe(
 			map((response) => {
 				xml2js.parseString(response, (err, result) => {
+					this.NWISsites = result.mapper.sites[0].site;
+					//console.log("Gages Returned:", result.mapper.sites[0].site);
 					this.NWISsites = result.mapper.sites[0].site;
 					this.addToNwisLayer();
 				});
