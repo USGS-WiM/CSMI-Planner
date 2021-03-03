@@ -797,7 +797,8 @@ export class MapService {
 		}
 		item +=
 			'<i class="site multiple-types"></i>Multiple<br>' +
-			'<i class="site sigl"></i>SiGL Site</div>';
+			'<i class="site sigl"></i>SiGL Site<br>' +
+			'<i class="site nwis"></i>NWIS Site</div>';
 		div.innerHTML = item;
 
 		if (window.outerWidth < 1200) {
@@ -820,11 +821,13 @@ export class MapService {
 	}
 
 	public addToNwisLayer(): void {
-		const NWISmarker = L.divIcon({
-			name: "NWIS",
-			iconAnchor: [7, 10],
-			popupAnchor: [0, 2],
-		});
+		const NWISmarker = {
+			radius: 4,
+			fillColor: "black",
+			weight: 0,
+			opacity: 1,
+			fillOpacity: 0.5,
+		};
 		let NWISmarkers = {};
 		this.NWISsites.forEach((site) => {
 			console.log(site);
@@ -832,9 +835,7 @@ export class MapService {
 			let siteName = site.$.sna;
 			let lat = site.$.lat;
 			let lng = site.$.lng;
-			NWISmarkers[siteID] = L.circleMarker([lat, lng], {
-				icon: NWISmarker,
-			});
+			NWISmarkers[siteID] = L.circleMarker([lat, lng], NWISmarker);
 			NWISmarkers[siteID].data = { siteName: siteName, SiteCode: siteID };
 
 			//https://nwis.waterdata.usgs.gov/nwis/uv?site_no=04137005
