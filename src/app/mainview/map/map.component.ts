@@ -71,7 +71,6 @@ export class MapComponent implements OnInit {
 		this._mapService.nwisLayer = L.featureGroup().addTo(
 			this._mapService.map
 		);
-
 		this._mapService.siglLayer = L.featureGroup().addTo(
 			this._mapService.map
 		);
@@ -110,6 +109,7 @@ export class MapComponent implements OnInit {
 		};
 
 		this._mapService.legend.addTo(this._mapService.map);
+		this._mapService.queryNWISrtGages().subscribe();
 
 		/// NOT FINISHED CLUSTERING
 		/* this._mapService.map.on("load moveend zoomend", (e) => {

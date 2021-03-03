@@ -398,8 +398,7 @@ export class DataviewComponent implements OnInit {
 			.getFullSite(siteId)
 			.subscribe((res) => {
 				this.selectedSiglSite = res;
-				console.log("full site in datacomponent", res);
-				console.log(this.selectedSiglSite);
+				console.log("selected Sigl Site: ", this.selectedSiglSite);
 			});
 	}
 
