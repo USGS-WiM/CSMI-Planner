@@ -830,7 +830,6 @@ export class MapService {
 		};
 		let NWISmarkers = {};
 		this.NWISsites.forEach((site) => {
-			console.log(site);
 			let siteID = site.$.sno;
 			let siteName = site.$.sna;
 			let lat = site.$.lat;
@@ -838,9 +837,12 @@ export class MapService {
 			NWISmarkers[siteID] = L.circleMarker([lat, lng], NWISmarker);
 			NWISmarkers[siteID].data = { siteName: siteName, SiteCode: siteID };
 
-			//https://nwis.waterdata.usgs.gov/nwis/uv?site_no=04137005
+			//Old-style NWIS site page
+			/* let siteUrl =
+			"https://nwis.waterdata.usgs.gov/nwis/uv?site_no=" + siteID; */
+			//Next-gen NWIS site page
 			let siteUrl =
-				"https://nwis.waterdata.usgs.gov/nwis/uv?site_no=" + siteID;
+				"https://waterdata.usgs.gov/monitoring-location/" + siteID;
 
 			NWISmarkers[siteID].bindPopup(
 				"<b>NWIS Site Name: </b>" +
@@ -890,7 +892,6 @@ export class MapService {
 		return this._http.get(url, { responseType: "text" }).pipe(
 			map((response) => {
 				xml2js.parseString(response, (err, result) => {
-					console.log("result: ", result);
 					this.NWISsites = result.mapper.sites[0].site;
 					this.addToNwisLayer();
 				});
