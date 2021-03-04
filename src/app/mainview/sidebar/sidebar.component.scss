@@ -1,200 +1,204 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 
 // Mobile menu toggle
 // Outside sidebar
-#sidebarToggle{
-    color: white;
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    transition: 0.2s;
-    font-size: 20px;
-    width: 24px;
-    text-align: center;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    height: 54px;
-    width: 54px;
+#sidebarToggle {
+	color: white;
+	display: none;
+	flex-direction: column;
+	justify-content: center;
+	transition: 0.2s;
+	font-size: 20px;
+	width: 24px;
+	text-align: center;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	height: 54px;
+	width: 54px;
 
-    &:hover,
-    &:active{
-        cursor: pointer;
-        opacity: 0.6;
-        transition: 0.2s;
-    }
+	&:hover,
+	&:active {
+		cursor: pointer;
+		opacity: 0.6;
+		transition: 0.2s;
+	}
 
-    @media only screen and (max-width: 1200px) {
-        display: flex;
-    }
+	@media only screen and (max-width: 1200px) {
+		display: flex;
+	}
 }
 
 // Sidebar
-#sidebar{
-    
+#sidebar {
+	.sidebar-header {
+		font-family: $poppins;
+		font-weight: 500;
+		font-size: 18px;
+		color: $black;
+		letter-spacing: -0.3px;
+		display: flex;
+		box-sizing: border-box;
+		padding: 10px 15px;
 
-    .sidebar-header{
-        font-family: $poppins;
-        font-weight: 500;
-        font-size: 18px;
-        color: $black;
-        letter-spacing: -0.3px;
-        display: flex;
-        box-sizing: border-box;
-        padding: 10px 15px;
+		i {
+			width: 30px;
+			height: 30px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
 
-        i{
-            width: 30px;
-            height: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+		b {
+			display: flex;
+			justify-content: space-between;
+			flex-grow: 3;
 
-        b{
-            display: flex;
-            justify-content: space-between;
-            flex-grow: 3;
+			&:after {
+				content: "\f067";
+				font-family: "Font Awesome 5 Pro";
+				right: 15px;
+				color: fade-out($black, 0.8);
+				font-size: 16px;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+			}
 
-            &:after{
-                content: '\f067';
-                font-family: 'Font Awesome 5 Pro';
-                right: 15px;
-                color: fade-out($black, 0.8);
-                font-size: 16px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
+			span {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				flex-grow: 3;
+			}
+		}
 
-            span{
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                flex-grow: 3;
-            }
-        }
+		&.expanded {
+			b:after {
+				content: "\f068";
+			}
+		}
 
-        &.expanded{
+		&:hover {
+			cursor: pointer;
 
-            b:after{
-                content: '\f068';
-            }
-        }
+			b {
+				span {
+					text-decoration: underline;
+				}
 
-        &:hover{
-            cursor: pointer;
+				&:after {
+					color: $black;
+				}
+			}
+		}
+	}
 
-            b{
-                span{
-                    text-decoration: underline;
-                }
+	// Content Blocks
+	// Expand with class .expanded
+	.sidebar-content {
+		display: block;
+		box-sizing: border-box;
+		// max-height: 0px;
+		// transition: max-height 0.15s 0.15s, transform 0.15s 0s ease;
+		overflow: visible;
+		padding: 0 15px 0 45px;
+		// transform: scaleY(0);
+		// transform-origin: 0 0;
+		display: none;
 
-                &:after{
-                    color: $black;
-                }
-            }
-        }
-    }
+		&.expanded {
+			// transition: max-height 0.15s 0s, transform 0.15s 0.15s ease;
+			// max-height: 700px;
+			// overflow: auto;
+			display: block;
+			// transform: scaleY(1);
+		}
+	}
 
+	// Sidebar Basemaps
+	// Sidebar Basemaps
+	// Sidebar Basemaps
+	#sidebarBasemaps {
+		.basemap {
+			display: block;
+			font-family: $sans;
+			font-size: 13px;
+			font-weight: 500;
+			box-sizing: border-box;
+			letter-spacing: -0.2px;
+			padding: 3px 0;
+			color: $black;
 
-    // Content Blocks
-    // Expand with class .expanded
-    .sidebar-content{
-        display: block;
-        box-sizing: border-box;
-        // max-height: 0px;
-        // transition: max-height 0.15s 0.15s, transform 0.15s 0s ease;        
-        overflow: visible;
-        padding: 0 15px 0 45px;
-        // transform: scaleY(0);
-        // transform-origin: 0 0;
-        display: none;
+			&:hover {
+				cursor: pointer;
+				text-decoration: underline;
+			}
 
-        &.expanded{
-            // transition: max-height 0.15s 0s, transform 0.15s 0.15s ease;        
-            // max-height: 700px;
-            // overflow: auto;
-            display: block;
-            // transform: scaleY(1);
-        }
-    }
+			&.active {
+				color: $primary;
 
-    // Sidebar Basemaps
-    // Sidebar Basemaps
-    // Sidebar Basemaps
-    #sidebarBasemaps{
+				&:hover {
+					text-decoration: none;
+				}
+			}
+		}
+	}
 
-        .basemap{
-            display: block;
-            font-family: $sans;
-            font-size: 13px;
-            font-weight: 500;
-            box-sizing: border-box;
-            letter-spacing: -0.2px;
-            padding: 3px 0;
-            color: $black;
+	.auxLayer {
+		&:hover {
+			cursor: pointer;
+			text-decoration: underline;
+		}
 
-            &:hover{
-                cursor: pointer;
-                text-decoration: underline;
-            }
+		&.active {
+			color: $primary;
 
-            &.active{
-                color: $primary;
-
-                &:hover{
-                    text-decoration: none;
-                }
-            }
-        }
-    }
-
+			&:hover {
+				text-decoration: none;
+			}
+		}
+	}
 }
-
-
-
 
 // Custom Sidebar Elements
 // Custom Sidebar Elements
 // Custom Sidebar Elements
-#siteCount{
-    display: block;
-    text-align: center;
-    background-color: $blue;
-    box-sizing: border-box;
-    padding: 10px;
-    color: $white;
-    font-size: 12px;
-    font-weight: 500;
-    margin: 0 auto;
-    font-family: $poppins;
-    letter-spacing: -0.4px;
-    width: 280px;
-    z-index: 50;
+#siteCount {
+	display: block;
+	text-align: center;
+	background-color: $blue;
+	box-sizing: border-box;
+	padding: 10px;
+	color: $white;
+	font-size: 12px;
+	font-weight: 500;
+	margin: 0 auto;
+	font-family: $poppins;
+	letter-spacing: -0.4px;
+	width: 280px;
+	z-index: 50;
 
-    b{
-        font-weight: 600;
-        letter-spacing: -0.2px;
-    }
+	b {
+		font-weight: 600;
+		letter-spacing: -0.2px;
+	}
 }
 
-
-.clearForm{
-    margin-top: 15px;
+.clearForm {
+	margin-top: 15px;
 }
 
-
 // Multiselect Labels
 // Multiselect Labels
 // Multiselect Labels
-#sidebar .multiselect-label{
-    position: relative;
-    top: 5px;
-    color: $black;
+#sidebar .multiselect-label {
+	position: relative;
+	top: 5px;
+	color: $black;
 }
 
 button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
+	background-color: #cccccc;
+	cursor: not-allowed;
 }

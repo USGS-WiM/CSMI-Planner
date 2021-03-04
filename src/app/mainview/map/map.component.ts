@@ -68,9 +68,7 @@ export class MapComponent implements OnInit {
 		this._mapService.sitesLayer = L.featureGroup().addTo(
 			this._mapService.map
 		);
-		this._mapService.nwisLayer = L.featureGroup().addTo(
-			this._mapService.map
-		);
+		this._mapService.nwisLayer = L.featureGroup();
 		this._mapService.siglLayer = L.featureGroup().addTo(
 			this._mapService.map
 		);

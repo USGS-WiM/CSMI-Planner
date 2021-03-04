@@ -28,6 +28,7 @@ export class SidebarComponent implements OnInit {
 	public geoJSONsiteCount;
 	public siglSiteCount;
 	showBasemaps = false;
+	showAuxLayers = false;
 	showSiteFilters = true;
 	showSiglFilters = false;
 	showParameterFilters = true;
@@ -549,19 +550,23 @@ export class SidebarComponent implements OnInit {
 		//this._mapService.addToSitesLayer(this._mapService.siglgeoJson); // add sigl points back after clear
 	}
 
-	// called from basemap button click
+	// called from sidebar layer click
 	public toggleLayer(newVal: string) {
-		this._mapService.chosenBaseLayer = newVal;
-		this._mapService.map.removeLayer(
-			this._mapService.baseMaps["OpenStreetMap"]
-		);
-		this._mapService.map.removeLayer(this._mapService.baseMaps["Topo"]);
-		this._mapService.map.removeLayer(this._mapService.baseMaps["Terrain"]);
-		this._mapService.map.removeLayer(
-			this._mapService.baseMaps["Satellite"]
-		);
-		this._mapService.map.removeLayer(this._mapService.baseMaps["Gray"]);
-		this._mapService.map.removeLayer(this._mapService.baseMaps["Nautical"]);
-		this._mapService.map.addLayer(this._mapService.baseMaps[newVal]);
+		//check for standard map layers, else basemaps
+		if (newVal == "nwisLayer" || newVal == "siglLayer") {
+			if (this._mapService.map.hasLayer(this._mapService[newVal])) {
+				this._mapService.map.removeLayer(this._mapService[newVal]);
+			} else {
+				this._mapService.map.addLayer(this._mapService[newVal]);
+			}
+		} else {
+			this._mapService.chosenBaseLayer = newVal;
+			Object.keys(this._mapService.baseMaps).forEach((basemap) => {
+				this._mapService.map.removeLayer(
+					this._mapService.baseMaps[basemap]
+				);
+			});
+			this._mapService.map.addLayer(this._mapService.baseMaps[newVal]);
+		}
 	}
 }
