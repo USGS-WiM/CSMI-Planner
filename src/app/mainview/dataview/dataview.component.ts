@@ -99,7 +99,7 @@ export class DataviewComponent implements OnInit {
 		this._mapService.SelectedSite.subscribe((Response) => {
 			// subscriber for map click, updates url params and queries site's result data
 			if (Response.lake_type_id) {
-				console.log("selected sigl site response", Response);
+				//console.log("selected sigl site response", Response);
 				this.getSiteData(Response.site_id);
 				this.getProjectData(Response.project_id);
 			} else {

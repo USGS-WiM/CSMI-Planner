@@ -114,6 +114,7 @@ export class SidebarComponent implements OnInit {
 				}
 			}); */
 			this.siglSiteCount = this._mapService.siglSiteCount;
+			this._loaderService.hideFullPageLoad();
 		});
 		this._siglService.getProjects().subscribe((response) => {
 			//TODO: create subject getter/setter in service
@@ -233,7 +234,6 @@ export class SidebarComponent implements OnInit {
 			if (this.urlSelSites[0] !== null) {
 				this._mapService.selectSites(this.urlSelSites, true);
 			}
-			this._loaderService.hideFullPageLoad();
 			this.firstLoad = false;
 			this._mapService.updateLegend();
 			this._mapService._toasterSubject.next("none");
