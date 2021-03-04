@@ -29,9 +29,9 @@ export class SidebarComponent implements OnInit {
 	public siglSiteCount;
 	showBasemaps = false;
 	showAuxLayers = false;
-	showSiteFilters = true;
-	showSiglFilters = false;
-	showParameterFilters = true;
+	showSiteFilters = false;
+	showSiglFilters = true;
+	showParameterFilters = false;
 	expandSidebar = false;
 	chosenBaseLayer;
 
@@ -106,8 +106,13 @@ export class SidebarComponent implements OnInit {
 
 		//fire sigl service data request
 		this._siglService.getSiglSites().subscribe((response) => {
-			//set siteCount after response is returned
-			//TODO: create sitecount as Observable in siglService or mapservice
+			/* this._siglService.siglgeoJson.features.forEach((feature) => {
+				if (feature.properties.site_parameters.length > 0) {
+					console.log(feature.properties.site_parameters);
+				} else {
+					console.log("no site properties");
+				}
+			}); */
 			this.siglSiteCount = this._mapService.siglSiteCount;
 		});
 		this._siglService.getProjects().subscribe((response) => {
@@ -335,11 +340,6 @@ export class SidebarComponent implements OnInit {
 		});
 
 		this.siglDropDownGroup.valueChanges.subscribe((selections) => {
-			//console.log("filter subscription: ", selections);
-			console.log(
-				"site count before add:",
-				this._mapService.siglSiteCount
-			);
 			this.filterSiglJSON(selections);
 		});
 
@@ -553,7 +553,11 @@ export class SidebarComponent implements OnInit {
 	// called from sidebar layer click
 	public toggleLayer(newVal: string) {
 		//check for standard map layers, else basemaps
-		if (newVal == "nwisLayer" || newVal == "siglLayer") {
+		if (
+			newVal == "nwisLayer" ||
+			newVal == "siglLayer" ||
+			newVal == "sitesLayer"
+		) {
 			if (this._mapService.map.hasLayer(this._mapService[newVal])) {
 				this._mapService.map.removeLayer(this._mapService[newVal]);
 			} else {
