@@ -340,11 +340,6 @@ export class SidebarComponent implements OnInit {
 		});
 
 		this.siglDropDownGroup.valueChanges.subscribe((selections) => {
-			//console.log("filter subscription: ", selections);
-			console.log(
-				"site count before add:",
-				this._mapService.siglSiteCount
-			);
 			this.filterSiglJSON(selections);
 		});
 
