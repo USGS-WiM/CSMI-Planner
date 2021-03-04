@@ -911,7 +911,7 @@ export class MapService {
 			"&siteStatus=" +
 			siteStatus;
 
-		console.log("here", url);
+		//console.log("RT Gage URL", url);
 
 		return this._http.get(url, { responseType: "text" }).pipe(
 			map((response) => {

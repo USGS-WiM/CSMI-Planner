@@ -105,15 +105,23 @@
 				<label class="auxLayer">
 					<input
 						type="checkbox"
-						(click)="toggleLayer('nwisLayer')"
-					/>USGS Realtime Streamgages
+						checked
+						(click)="toggleLayer('sitesLayer')"
+					/>Water Quality Portal Sites
 				</label>
+
 				<label class="auxLayer">
 					<input
 						type="checkbox"
 						checked
 						(click)="toggleLayer('siglLayer')"
 					/>SiGL Sites
+				</label>
+				<label class="auxLayer">
+					<input
+						type="checkbox"
+						(click)="toggleLayer('nwisLayer')"
+					/>USGS Realtime Streamgages
 				</label>
 			</div>
 		</div>

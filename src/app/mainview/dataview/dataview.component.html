@@ -1,10 +1,13 @@
 <div id="dataView" [ngClass]="{ collapsed: collapsedPanel }">
 	<app-dataloader-div id="dataLoader"></app-dataloader-div>
 
-	<div class="site-meta dataview-padding">
-		<h1>Data</h1>
-
-		<!--SIGL SITE DATA-->
+	<div
+		id="siglData"
+		*ngIf="selectedProject; else WQPSites"
+		class="site-meta dataview-padding"
+	>
+		<h1>SiGL Data</h1>
+		<div *ngIf="selectedProject"></div>
 		<div *ngIf="selectedProject" class="card">
 			<div class="card-header">
 				<span class="dataLabel" *ngIf="selectedProject">
@@ -30,7 +33,8 @@
 		<div *ngIf="selectedSiglSite" class="card">
 			<div class="card-header">
 				<h3>
-					<b>Selected SiGL Site Name:</b> {{ selectedSiglSite.Name }}
+					<b>Selected SiGL Site Name:</b>
+					{{ selectedSiglSite.Name }}
 				</h3>
 			</div>
 			<span *ngIf="selectedSiglSite" class="card-body">
@@ -125,48 +129,52 @@
 					<span>{{ selectedSiglSite.AdditionalInfo }}</span>
 				</div>
 			</span>
-			<div>
-				_____________________________________________________________________________________________
-			</div>
-		</div>
-		<!-- END SIGL SITE DATA-->
-
-		<button
-			class="selectionButton"
-			*ngIf="!selectMultSites"
-			type="button"
-			id="clickPolyButton"
-			(click)="toggleSelectMultSites(true)"
-		>
-			<i class="fa fa-plus"></i>&nbsp;&nbsp;Select Multiple Sites
-		</button>
-		<button
-			class="selectionButton"
-			*ngIf="selectMultSites"
-			type="button"
-			id="clickPolyButton"
-			(click)="toggleSelectMultSites(false)"
-		>
-			<i class="fa fa-stop"></i>&nbsp;&nbsp;Finish selecting
-		</button>
-		<div *ngIf="showSiteData && !noData">
-			<h3><b>Sites:</b> {{ selectedSites.join(", ") }}</h3>
-			<h3 *ngIf="!selectMultSites">
-				<b>Characteristics:</b> {{ charsWithData.join(", ") }}
-			</h3>
-			<h3 *ngIf="eventYear"><b>Event Year: </b>{{ eventYear }}</h3>
 		</div>
 	</div>
+	<ng-template #WQPSites>
+		<div class="site-meta dataview-padding">
+			<h1>Data</h1>
+			<button
+				class="selectionButton"
+				*ngIf="!selectMultSites"
+				type="button"
+				id="clickPolyButton"
+				(click)="toggleSelectMultSites(true)"
+			>
+				<i class="fa fa-plus"></i>&nbsp;&nbsp;Select Multiple Sites
+			</button>
+			<button
+				class="selectionButton"
+				*ngIf="selectMultSites"
+				type="button"
+				id="clickPolyButton"
+				(click)="toggleSelectMultSites(false)"
+			>
+				<i class="fa fa-stop"></i>&nbsp;&nbsp;Finish selecting
+			</button>
+			<div *ngIf="showSiteData && !noData">
+				<h3><b>Sites:</b> {{ selectedSites.join(", ") }}</h3>
+				<h3 *ngIf="!selectMultSites">
+					<b>Characteristics:</b> {{ charsWithData.join(", ") }}
+				</h3>
+				<h3 *ngIf="eventYear"><b>Event Year: </b>{{ eventYear }}</h3>
+			</div>
+		</div>
+	</ng-template>
 
 	<div
-		[class.hidden]="showSiteData || noData"
+		[class.hidden]="showSiteData || noData || selectedProject"
 		class="chart-wrapper multSiteCharts"
 	>
 		<div class="chart" id="typeChart"></div>
 		<div class="chart" id="orgChart"></div>
 	</div>
 
-	<div [class.hidden]="!showSiteData || noData || selectMultSites">
+	<div
+		[class.hidden]="
+			!showSiteData || noData || selectMultSites || selectedProject
+		"
+	>
 		<div class="dataview-padding">
 			<div *ngIf="charTypes.length > 1">
 				<label class="charType">Measurement Type:</label>
