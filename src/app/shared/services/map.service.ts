@@ -490,6 +490,12 @@ export class MapService {
 			let siteUrl =
 				"https://waterdata.usgs.gov/monitoring-location/" + siteID;
 
+			// waterdata monitoring api, set in <img> tag -- doesn't work in popup very well, maybe dataview
+			/* let graphUrl =
+				"https://labs.waterdata.usgs.gov/api/graph-images/monitoring-location/" +
+				siteID +
+				"/?parameterCode=00060"; */
+
 			NWISmarkers[siteID]
 				.bindPopup(
 					"<b>USGS Realtime Gage Name: </b>" +
@@ -516,7 +522,8 @@ export class MapService {
 				});
 			this.nwisLayer.addLayer(NWISmarkers[siteID]);
 		});
-		this.nwisLayer.addTo(this.map);
+		//don't add on map init for now
+		//this.nwisLayer.addTo(this.map);
 	}
 
 	public addToSitesLayer(geoJson: any) {

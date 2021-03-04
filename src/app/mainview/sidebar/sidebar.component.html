@@ -90,6 +90,34 @@
 			</div>
 		</div>
 
+		<div
+			class="sidebar-header"
+			(click)="showAuxLayers = !showAuxLayers"
+			[ngClass]="{ expanded: showAuxLayers }"
+		>
+			<i class="fal fa-map"></i>
+			<b><span>Add or Remove Layers</span></b>
+		</div>
+
+		<!-- Aux Layer content -->
+		<div class="sidebar-content" [ngClass]="{ expanded: showAuxLayers }">
+			<div id="sidebarAuxLayers">
+				<label class="auxLayer">
+					<input
+						type="checkbox"
+						(click)="toggleLayer('nwisLayer')"
+					/>USGS Realtime Streamgages
+				</label>
+				<label class="auxLayer">
+					<input
+						type="checkbox"
+						checked
+						(click)="toggleLayer('siglLayer')"
+					/>SiGL Sites
+				</label>
+			</div>
+		</div>
+
 		<!--  Sidebar WQP filters  -->
 		<div
 			class="sidebar-header"
