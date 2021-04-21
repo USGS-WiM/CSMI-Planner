@@ -29,12 +29,12 @@ export class SiglService {
 	public getProjects(): Observable<any> {
 		return this.http.get<any>(`${this.HuronProjectsUrl}`).pipe(
 			/* tap((projectList: any) => {
-				console.log("Huron Projects", projectList);
+				projectList.map((project) => {
+					console.log(project);
+				});
 			}), */
 			map((projectList) => {
-				projectList.map((project) => {
-					this.projects.push(project);
-				});
+				this.projects = projectList;
 			}),
 			catchError(this.handleError)
 		);

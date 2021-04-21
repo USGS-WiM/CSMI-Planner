@@ -1,33 +1,31 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { fromEventPattern } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
+import { fromEventPattern } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: "root",
 })
 export class LoaderService {
-    private _loaderSubject = new Subject<boolean>();
+	private _loaderSubject = new Subject<boolean>();
+	public loaderState = this._loaderSubject.asObservable();
 
-    public loaderState = this._loaderSubject.asObservable();
+	private _dataloaderSubject = new Subject<boolean>();
+	public dataloaderState = this._dataloaderSubject.asObservable();
 
-    private _dataloaderSubject = new Subject<boolean>();
+	constructor() {}
 
-    public dataloaderState = this._dataloaderSubject.asObservable();
+	public showFullPageLoad() {
+		this._loaderSubject.next(true);
+	}
+	public hideFullPageLoad() {
+		this._loaderSubject.next(false);
+	}
 
-    constructor() { }
+	public showDataLoad() {
+		this._dataloaderSubject.next(true);
+	}
 
-    public showFullPageLoad() {
-        this._loaderSubject.next(true);
-    }
-    public hideFullPageLoad() {
-        this._loaderSubject.next(false);
-    }
-
-    public showDataLoad() {
-        this._dataloaderSubject.next(true);
-    }
-
-    public hideDataLoad() {
-        this._dataloaderSubject.next(false);
-    }
+	public hideDataLoad() {
+		this._dataloaderSubject.next(false);
+	}
 }

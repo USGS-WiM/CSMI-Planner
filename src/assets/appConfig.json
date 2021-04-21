@@ -1,5 +1,6 @@
 {
 	"geoJsonURL": "https://www.waterqualitydata.us/ogcservices/wfs/",
+	"geoJsonRAWURL": "https://www.waterqualitydata.us/data/Station/search?statecode=US%3A26&huc=0408*%3B0407*&mimeType=geojson&&counts=no",
 	"siglSitesURL": "https://sigl.wim.usgs.gov/SiGLServices/sites.geojson",
 	"resultUrl": "https://www.waterqualitydata.us/data/Result/search",
 	"summaryUrl": "https://www.waterqualitydata.us/data/summary/monitoringlocation",

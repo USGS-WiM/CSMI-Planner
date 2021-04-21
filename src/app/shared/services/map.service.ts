@@ -44,7 +44,8 @@ export class MapService {
 	public filterOptions: any;
 	public highlightMarkers = [];
 	public markerClusters;
-	public geoJsonURL;
+	public geoJsonURL; //uses the WMS
+	public geoJsonRAWURL; //gets geoJSON directly and bypasses the WMS.  "should" bypass the attchement header
 	public colorJson = []; // for symbolizing sites if site filters applied
 	public selectMultSites = false;
 	public siglSiteCount: number;
@@ -152,6 +153,7 @@ export class MapService {
 	) {
 		this.configSettings = this._configService.getConfiguration();
 		this.geoJsonURL = this.configSettings.geoJsonURL;
+		this.geoJsonRAWURL = this.configSettings.geoJsonRAWURL;
 		this.chosenBaseLayer = "Topo";
 
 		this.baseMaps = {
@@ -233,7 +235,7 @@ export class MapService {
 					// searchParams: "characteristicname?text=nitrogen;countycode:US:36:059|US:36:103|US:36:081|US:36:047"
 				}
 			),
-			NWIS: L.tileLayer.wms(
+			/*NWIS: L.tileLayer.wms(
 				"https://www.waterqualitydata.us/ogcservices/ows?",
 				{
 					layers: "qw_portal_map:nwis_sites",
@@ -242,7 +244,7 @@ export class MapService {
 					zIndex: 2,
 					// searchParams: "countycode:US:36:059|US:36:103"
 				}
-			),
+			), */
 		};
 	}
 
@@ -279,9 +281,10 @@ export class MapService {
 			fromObject: this.URLparams,
 		});
 		return this._http
-			.get<any>(this.geoJsonURL, { params: preparedParams })
+			.get<any>(this.geoJsonRAWURL, { params: preparedParams })
 			.pipe(
 				timeout(this.timeoutTime),
+				tap((response) => console.log(response)),
 				map((response) => {
 					this.geoJson = response;
 					this.filterJson = this.geoJson; // set filtered object to all on init.
@@ -315,7 +318,7 @@ export class MapService {
 					return this.filterOptions;
 				}),
 				catchError((error) => {
-					this._loaderService.hideFullPageLoad();
+					//this._loaderService.hideFullPageLoad();
 					return this.handleError(error);
 				})
 			);
@@ -873,7 +876,11 @@ export class MapService {
 		}
 	}
 
-	public getBbox() {
+	/*
+	Currently unused due to box size restrictions in the WQP services.
+	Relying on HUC2 params for now
+	*/
+	/* public getBbox() {
 		return (
 			this.map.getBounds().getSouthWest().lng.toFixed(7) +
 			"," +
@@ -883,11 +890,12 @@ export class MapService {
 			"," +
 			this.map.getBounds().getNorthEast().lat.toFixed(7)
 		);
-	}
+	} */
 
 	// use extent to get NWIS rt gages based on bounding box, display on map
 	public queryNWISrtGages(): Observable<any> {
 		const NWISmarkers = {};
+
 		//const bbox = this.getBbox();
 		//debug -- BBOX is returning only for very small areas
 		//const bbox = "-43.505249,41.5102175,-72.6506348,47.2884143";
@@ -895,7 +903,7 @@ export class MapService {
 
 		// NWIS query options from http://waterservices.usgs.gov/rest/IV-Test-Tool.html
 		const huc = "04";
-		const parameterCodeList = "00065,00060,72214";
+		const parameterCodeList = "00065,00060,63160,72214";
 		const siteTypeList = "ST";
 		const siteStatus = "active";
 		const url =
